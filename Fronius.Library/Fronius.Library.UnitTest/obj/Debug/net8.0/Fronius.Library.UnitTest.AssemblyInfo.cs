@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Fronius.Library.API")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Fronius.Library.UnitTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f0f395a68595e1c51cae16dc04752e3426f0534")]
-[assembly: System.Reflection.AssemblyProductAttribute("Fronius.Library.API")]
-[assembly: System.Reflection.AssemblyTitleAttribute("Fronius.Library.API")]
+[assembly: System.Reflection.AssemblyProductAttribute("Fronius.Library.UnitTest")]
+[assembly: System.Reflection.AssemblyTitleAttribute("Fronius.Library.UnitTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Généré par la classe MSBuild WriteCodeFragment.

@@ -171,6 +171,11 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetBooks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="authorId" Type="int" Mode="In" />
+          <Parameter Name="orderingColumn" Type="varchar" Mode="In" />
+          <Parameter Name="orderingDirection" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="LibraryModelStoreContainer">
           <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AuthorByBook" EntityType="Self.AuthorByBook" Schema="dbo" store:Type="Tables" />
@@ -256,6 +261,11 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             <End Role="Book" EntitySet="Books" />
             <End Role="Genre" EntitySet="Genres" />
           </AssociationSet>
+          <FunctionImport Name="GetBooks" ReturnType="Collection(LibraryModel.GetBooks_Result)">
+            <Parameter Name="authorId" Mode="In" Type="Int32" />
+            <Parameter Name="orderingColumn" Mode="In" Type="String" />
+            <Parameter Name="orderingDirection" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Book">
           <Key>
@@ -373,6 +383,15 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           <End Type="LibraryModel.Book" Role="Book" Multiplicity="*" />
           <End Type="LibraryModel.Genre" Role="Genre" Multiplicity="*" />
         </Association>
+        <ComplexType Name="GetBooks_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="250" />
+          <Property Type="Int16" Name="Year" Nullable="false" />
+          <Property Type="String" Name="ISBN" Nullable="true" MaxLength="13" />
+          <Property Type="String" Name="AuthorNames" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="IllustratorName" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="GenreNames" Nullable="true" MaxLength="4000" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -458,6 +477,19 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
               <ScalarProperty Name="Id" ColumnName="BookId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetBooks" FunctionName="LibraryModel.Store.GetBooks">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibraryModel.GetBooks_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="AuthorNames" ColumnName="AuthorNames" />
+                <ScalarProperty Name="IllustratorName" ColumnName="IllustratorName" />
+                <ScalarProperty Name="GenreNames" ColumnName="GenreNames" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

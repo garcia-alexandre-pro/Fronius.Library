@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fronius.Library.Services", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fronius.Library.API", "Fronius.Library.API\Fronius.Library.API.csproj", "{EA90996E-C123-45FF-840F-C3D36A192DB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fronius.Library.UnitTest", "Fronius.Library.UnitTest\Fronius.Library.UnitTest.csproj", "{C3D7E2AF-2D4D-45E9-AE81-71A1AC3CB0BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EA90996E-C123-45FF-840F-C3D36A192DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA90996E-C123-45FF-840F-C3D36A192DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA90996E-C123-45FF-840F-C3D36A192DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D7E2AF-2D4D-45E9-AE81-71A1AC3CB0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D7E2AF-2D4D-45E9-AE81-71A1AC3CB0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D7E2AF-2D4D-45E9-AE81-71A1AC3CB0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D7E2AF-2D4D-45E9-AE81-71A1AC3CB0BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

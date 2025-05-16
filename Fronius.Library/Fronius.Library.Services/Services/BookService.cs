@@ -5,11 +5,9 @@ namespace Fronius.Library.Services
 {
     public sealed class BookService : Service<Book, LibraryEntities>
     {
-        public IEnumerable<Book> Get(int? authorId = null)
+        public IEnumerable<GetBooks_Result> Get(int? authorId = null)
         {
-            return EntitySet;
-                //.Where(x => x.Authors.Select(z => z.Id).Contains(authorId))
-                //.OrderBy();
+            return Context.GetBooks(authorId, null, null);
         }
 
         /// <summary>
@@ -19,6 +17,9 @@ namespace Fronius.Library.Services
         /// <returns></returns>
         public int Add(Book book)
         {
+            if(EntitySet.Any(x => x.Title == book.Title.Trim().ToLowerInvariant()
+                && x.Year == book.Year))
+
             EntitySet.Add(book);
 
             Context.SaveChanges();

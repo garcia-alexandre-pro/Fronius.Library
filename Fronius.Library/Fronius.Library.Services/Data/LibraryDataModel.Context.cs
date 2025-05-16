@@ -12,6 +12,8 @@ namespace Fronius.Library.Services
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class LibraryEntities : DbContext
     {
@@ -32,5 +34,22 @@ namespace Fronius.Library.Services
         public virtual DbSet<Individual> Individuals { get; set; }
         public virtual DbSet<AuthorList> AuthorLists { get; set; }
         public virtual DbSet<IllustratorList> IllustratorLists { get; set; }
+    
+        public virtual ObjectResult<GetBooks_Result> GetBooks(Nullable<int> authorId, string orderingColumn, string orderingDirection)
+        {
+            var authorIdParameter = authorId.HasValue ?
+                new ObjectParameter("authorId", authorId) :
+                new ObjectParameter("authorId", typeof(int));
+    
+            var orderingColumnParameter = orderingColumn != null ?
+                new ObjectParameter("orderingColumn", orderingColumn) :
+                new ObjectParameter("orderingColumn", typeof(string));
+    
+            var orderingDirectionParameter = orderingDirection != null ?
+                new ObjectParameter("orderingDirection", orderingDirection) :
+                new ObjectParameter("orderingDirection", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetBooks_Result>("GetBooks", authorIdParameter, orderingColumnParameter, orderingDirectionParameter);
+        }
     }
 }
