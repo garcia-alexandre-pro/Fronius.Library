@@ -25,12 +25,12 @@ namespace Fronius.Library.Services
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Author> Author { get; set; }
-        public virtual DbSet<Book> Book { get; set; }
-        public virtual DbSet<Genre> Genre { get; set; }
-        public virtual DbSet<Illustrator> Illustrator { get; set; }
-        public virtual DbSet<Individual> Individual { get; set; }
-        public virtual DbSet<AuthorList> AuthorList { get; set; }
-        public virtual DbSet<IllustratorList> IllustratorList { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<Illustrator> Illustrators { get; set; }
+        public virtual DbSet<Individual> Individuals { get; set; }
+        public virtual DbSet<AuthorList> AuthorLists { get; set; }
+        public virtual DbSet<IllustratorList> IllustratorLists { get; set; }
     }
 }

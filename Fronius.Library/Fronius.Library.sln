@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fronius.Library.Services", "Fronius.Library.Services\Fronius.Library.Services.csproj", "{CC4B3428-A603-4D54-9D38-5534A71C12D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fronius.Library.API", "Fronius.Library.API\Fronius.Library.API.csproj", "{EA90996E-C123-45FF-840F-C3D36A192DB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{CC4B3428-A603-4D54-9D38-5534A71C12D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC4B3428-A603-4D54-9D38-5534A71C12D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC4B3428-A603-4D54-9D38-5534A71C12D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA90996E-C123-45FF-840F-C3D36A192DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA90996E-C123-45FF-840F-C3D36A192DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA90996E-C123-45FF-840F-C3D36A192DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA90996E-C123-45FF-840F-C3D36A192DB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

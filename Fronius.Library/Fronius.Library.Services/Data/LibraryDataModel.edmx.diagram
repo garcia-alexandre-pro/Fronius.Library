@@ -5,18 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="12c83d2ef90a42598c64fafd87eb76b3" Name="Diagram1">
-        <EntityTypeShape EntityType="LibraryModel.Author" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Book" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Genre" Width="1.5" PointX="7.5" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Illustrator" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Individual" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.AuthorList" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.IllustratorList" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
-        <AssociationConnector Association="LibraryModel.FK_Author_Individual" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_Book_Illustrator" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_Illustrator_Individual" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.AuthorByBook" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.GenreByBook" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LibraryModel.Book" Width="1.5" PointX="5.25" PointY="2.25" />
+        <EntityTypeShape EntityType="LibraryModel.Author" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="LibraryModel.Genre" Width="1.5" PointX="7.5" PointY="2.375" />
+        <EntityTypeShape EntityType="LibraryModel.Illustrator" Width="1.5" PointX="3" PointY="3.625" />
+        <EntityTypeShape EntityType="LibraryModel.Individual" Width="1.5" PointX="0.75" PointY="2.125" />
+        <EntityTypeShape EntityType="LibraryModel.AuthorList" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="LibraryModel.IllustratorList" Width="1.5" PointX="0.75" PointY="6.75" />
+        <AssociationConnector Association="LibraryModel.FK_Author_Individual" />
+        <AssociationConnector Association="LibraryModel.FK_Book_Illustrator" />
+        <AssociationConnector Association="LibraryModel.FK_Illustrator_Individual" />
+        <AssociationConnector Association="LibraryModel.AuthorByBook" />
+        <AssociationConnector Association="LibraryModel.GenreByBook" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

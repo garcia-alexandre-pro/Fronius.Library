@@ -1,0 +1,103 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.API\\Fronius.Library.API.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.API\\Fronius.Library.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.API\\Fronius.Library.API.csproj",
+        "projectName": "Fronius.Library.API",
+        "projectPath": "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.API\\Fronius.Library.API.csproj",
+        "packagesPath": "C:\\Users\\agarcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\agarcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "\\\\074-VMINTEG\\nugetfeed": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.Services\\Fronius.Library.Services.csproj": {
+                "projectPath": "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.Services\\Fronius.Library.Services.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.Services\\Fronius.Library.Services.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.Services\\Fronius.Library.Services.csproj",
+        "projectName": "Fronius.Library.Services",
+        "projectPath": "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.Services\\Fronius.Library.Services.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net481": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net481": {}
+      }
+    }
+  }
+}

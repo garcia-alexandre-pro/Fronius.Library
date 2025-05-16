@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="Id" />
@@ -27,7 +27,7 @@
           <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Year" Type="smallint" Nullable="false" />
           <Property Name="IllustratorId" Type="int" Nullable="false" />
-          <Property Name="ISBN" Type="char" MaxLength="17" Nullable="false" />
+          <Property Name="ISBN" Type="char" MaxLength="13" />
         </EntityType>
         <EntityType Name="Genre">
           <Key>
@@ -224,58 +224,86 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             <End Role="Illustrator" EntitySet="Illustrator" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Author">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Individual" Relationship="Self.FK_Author_Individual" FromRole="Author" ToRole="Individual" />
-          <NavigationProperty Name="Book" Relationship="Self.AuthorByBook" FromRole="Author" ToRole="Book" />
-        </EntityType>
+        <EntityContainer Name="LibraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="LibraryModel.Book" />
+          <EntitySet Name="Authors" EntityType="LibraryModel.Author" />
+          <EntitySet Name="Genres" EntityType="LibraryModel.Genre" />
+          <EntitySet Name="Illustrators" EntityType="LibraryModel.Illustrator" />
+          <EntitySet Name="Individuals" EntityType="LibraryModel.Individual" />
+          <EntitySet Name="AuthorLists" EntityType="LibraryModel.AuthorList" />
+          <EntitySet Name="IllustratorLists" EntityType="LibraryModel.IllustratorList" />
+          <AssociationSet Name="FK_Author_Individual" Association="LibraryModel.FK_Author_Individual">
+            <End Role="Individual" EntitySet="Individuals" />
+            <End Role="Author" EntitySet="Authors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Book_Illustrator" Association="LibraryModel.FK_Book_Illustrator">
+            <End Role="Illustrator" EntitySet="Illustrators" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Illustrator_Individual" Association="LibraryModel.FK_Illustrator_Individual">
+            <End Role="Individual" EntitySet="Individuals" />
+            <End Role="Illustrator" EntitySet="Illustrators" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorByBook" Association="LibraryModel.AuthorByBook">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="GenreByBook" Association="LibraryModel.GenreByBook">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Genre" EntitySet="Genres" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Book">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Year" Type="Int16" Nullable="false" />
           <Property Name="IllustratorId" Type="Int32" Nullable="false" />
-          <Property Name="ISBN" Type="String" MaxLength="17" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Illustrator" Relationship="Self.FK_Book_Illustrator" FromRole="Book" ToRole="Illustrator" />
-          <NavigationProperty Name="Author" Relationship="Self.AuthorByBook" FromRole="Book" ToRole="Author" />
-          <NavigationProperty Name="Genre" Relationship="Self.GenreByBook" FromRole="Book" ToRole="Genre" />
+          <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Illustrator" Relationship="LibraryModel.FK_Book_Illustrator" FromRole="Book" ToRole="Illustrator" />
+          <NavigationProperty Name="Authors" Relationship="LibraryModel.AuthorByBook" FromRole="Book" ToRole="Author" />
+          <NavigationProperty Name="Genres" Relationship="LibraryModel.GenreByBook" FromRole="Book" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Individual" Relationship="LibraryModel.FK_Author_Individual" FromRole="Author" ToRole="Individual" />
+          <NavigationProperty Name="Books" Relationship="LibraryModel.AuthorByBook" FromRole="Author" ToRole="Book" />
         </EntityType>
         <EntityType Name="Genre">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Book" Relationship="Self.GenreByBook" FromRole="Genre" ToRole="Book" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Books" Relationship="LibraryModel.GenreByBook" FromRole="Genre" ToRole="Book" />
         </EntityType>
         <EntityType Name="Illustrator">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Book" Relationship="Self.FK_Book_Illustrator" FromRole="Illustrator" ToRole="Book" />
-          <NavigationProperty Name="Individual" Relationship="Self.FK_Illustrator_Individual" FromRole="Illustrator" ToRole="Individual" />
+          <NavigationProperty Name="Books" Relationship="LibraryModel.FK_Book_Illustrator" FromRole="Illustrator" ToRole="Book" />
+          <NavigationProperty Name="Individual" Relationship="LibraryModel.FK_Illustrator_Individual" FromRole="Illustrator" ToRole="Individual" />
         </EntityType>
         <EntityType Name="Individual">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FullName_CPT" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Author" Relationship="Self.FK_Author_Individual" FromRole="Individual" ToRole="Author" />
-          <NavigationProperty Name="Illustrator" Relationship="Self.FK_Illustrator_Individual" FromRole="Individual" ToRole="Illustrator" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FullName_CPT" Type="String" Nullable="false" MaxLength="101" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Author" Relationship="LibraryModel.FK_Author_Individual" FromRole="Individual" ToRole="Author" />
+          <NavigationProperty Name="Illustrator" Relationship="LibraryModel.FK_Illustrator_Individual" FromRole="Individual" ToRole="Illustrator" />
         </EntityType>
         <EntityType Name="AuthorList">
           <Key>
@@ -285,9 +313,9 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             <PropertyRef Name="FullName" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FullName" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="101" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="IllustratorList">
           <Key>
@@ -297,13 +325,13 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             <PropertyRef Name="FullName" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FullName" Type="String" MaxLength="101" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="101" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Author_Individual">
-          <End Role="Individual" Type="Self.Individual" Multiplicity="1" />
-          <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
+          <End Type="LibraryModel.Individual" Role="Individual" Multiplicity="1" />
+          <End Type="LibraryModel.Author" Role="Author" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Individual">
               <PropertyRef Name="Id" />
@@ -314,8 +342,8 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Book_Illustrator">
-          <End Role="Illustrator" Type="Self.Illustrator" Multiplicity="1" />
-          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <End Type="LibraryModel.Illustrator" Role="Illustrator" Multiplicity="1" />
+          <End Type="LibraryModel.Book" Role="Book" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Illustrator">
               <PropertyRef Name="Id" />
@@ -326,8 +354,8 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Illustrator_Individual">
-          <End Role="Individual" Type="Self.Individual" Multiplicity="1" />
-          <End Role="Illustrator" Type="Self.Illustrator" Multiplicity="0..1" />
+          <End Type="LibraryModel.Individual" Role="Individual" Multiplicity="1" />
+          <End Type="LibraryModel.Illustrator" Role="Illustrator" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Individual">
               <PropertyRef Name="Id" />
@@ -338,125 +366,96 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           </ReferentialConstraint>
         </Association>
         <Association Name="AuthorByBook">
-          <End Role="Author" Type="Self.Author" Multiplicity="*" />
-          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <End Type="LibraryModel.Author" Role="Author" Multiplicity="*" />
+          <End Type="LibraryModel.Book" Role="Book" Multiplicity="*" />
         </Association>
         <Association Name="GenreByBook">
-          <End Role="Book" Type="Self.Book" Multiplicity="*" />
-          <End Role="Genre" Type="Self.Genre" Multiplicity="*" />
+          <End Type="LibraryModel.Book" Role="Book" Multiplicity="*" />
+          <End Type="LibraryModel.Genre" Role="Genre" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="LibraryEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Author" EntityType="Self.Author" />
-          <EntitySet Name="Book" EntityType="Self.Book" />
-          <EntitySet Name="Genre" EntityType="Self.Genre" />
-          <EntitySet Name="Illustrator" EntityType="Self.Illustrator" />
-          <EntitySet Name="Individual" EntityType="Self.Individual" />
-          <EntitySet Name="AuthorList" EntityType="Self.AuthorList" />
-          <EntitySet Name="IllustratorList" EntityType="Self.IllustratorList" />
-          <AssociationSet Name="FK_Author_Individual" Association="Self.FK_Author_Individual">
-            <End Role="Individual" EntitySet="Individual" />
-            <End Role="Author" EntitySet="Author" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Book_Illustrator" Association="Self.FK_Book_Illustrator">
-            <End Role="Illustrator" EntitySet="Illustrator" />
-            <End Role="Book" EntitySet="Book" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Illustrator_Individual" Association="Self.FK_Illustrator_Individual">
-            <End Role="Individual" EntitySet="Individual" />
-            <End Role="Illustrator" EntitySet="Illustrator" />
-          </AssociationSet>
-          <AssociationSet Name="AuthorByBook" Association="Self.AuthorByBook">
-            <End Role="Author" EntitySet="Author" />
-            <End Role="Book" EntitySet="Book" />
-          </AssociationSet>
-          <AssociationSet Name="GenreByBook" Association="Self.GenreByBook">
-            <End Role="Book" EntitySet="Book" />
-            <End Role="Genre" EntitySet="Genre" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="LibraryModelStoreContainer" CdmEntityContainer="LibraryEntities">
-          <EntitySetMapping Name="Author">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="LibraryModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="IllustratorId" ColumnName="IllustratorId" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Authors">
             <EntityTypeMapping TypeName="LibraryModel.Author">
               <MappingFragment StoreEntitySet="Author">
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Book">
-            <EntityTypeMapping TypeName="LibraryModel.Book">
-              <MappingFragment StoreEntitySet="Book">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="IllustratorId" ColumnName="IllustratorId" />
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Genre">
+          <EntitySetMapping Name="Genres">
             <EntityTypeMapping TypeName="LibraryModel.Genre">
               <MappingFragment StoreEntitySet="Genre">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Illustrator">
+          <EntitySetMapping Name="Illustrators">
             <EntityTypeMapping TypeName="LibraryModel.Illustrator">
               <MappingFragment StoreEntitySet="Illustrator">
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Individual">
+          <EntitySetMapping Name="Individuals">
             <EntityTypeMapping TypeName="LibraryModel.Individual">
               <MappingFragment StoreEntitySet="Individual">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FullName_CPT" ColumnName="FullName_CPT" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AuthorList">
+          <EntitySetMapping Name="AuthorLists">
             <EntityTypeMapping TypeName="LibraryModel.AuthorList">
               <MappingFragment StoreEntitySet="AuthorList">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="IllustratorList">
+          <EntitySetMapping Name="IllustratorLists">
             <EntityTypeMapping TypeName="LibraryModel.IllustratorList">
               <MappingFragment StoreEntitySet="IllustratorList">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="AuthorByBook" TypeName="LibraryModel.AuthorByBook" StoreEntitySet="AuthorByBook">
+            <EndProperty Name="Book">
+              <ScalarProperty Name="Id" ColumnName="BookId" />
+            </EndProperty>
             <EndProperty Name="Author">
               <ScalarProperty Name="Id" ColumnName="AuthorId" />
             </EndProperty>
-            <EndProperty Name="Book">
-              <ScalarProperty Name="Id" ColumnName="BookId" />
-            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="GenreByBook" TypeName="LibraryModel.GenreByBook" StoreEntitySet="GenreByBook">
-            <EndProperty Name="Book">
-              <ScalarProperty Name="Id" ColumnName="BookId" />
-            </EndProperty>
             <EndProperty Name="Genre">
               <ScalarProperty Name="Id" ColumnName="GenreId" />
+            </EndProperty>
+            <EndProperty Name="Book">
+              <ScalarProperty Name="Id" ColumnName="BookId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
@@ -473,7 +472,7 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
