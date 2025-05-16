@@ -1,17 +1,25 @@
-﻿using Fronius.Library.Services.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fronius.Library.Services.Services
+namespace Fronius.Library.Services
 {
-    public class BookService : Service<BookRepository>
+    public sealed class BookService : Service<Book, LibraryEntities>
     {
-        public List<Book> GetBooks()
+        public List<Book> Get()
         {
-            return Repository.ObjectSet.ToList();
+            return EntitySet.ToList();
+        }
+
+        public int Add(Book book)
+        {
+            EntitySet.Add(book);
+
+            Context.SaveChanges();
+
+            return book.Id;
         }
     }
 }

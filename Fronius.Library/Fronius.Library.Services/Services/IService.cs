@@ -1,17 +1,28 @@
-﻿using Fronius.Library.Services.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fronius.Library.Services.Services
+namespace Fronius.Library.Services
 {
     public interface IService : IDisposable
     {
     }
-    public interface IService<T> where T : IService
+
+    public interface IService<T, U> : IService
+        where U : DbContext, new()
+        where T : class
     {
-        T Repository { get; }
+        /// <summary>
+        /// Virtual set of corresponding entities from the database
+        /// </summary>
+        DbSet<T> EntitySet { get; }
+        
+        /// <summary>
+        /// Database context
+        /// </summary>
+        U Context { get; }
     }
 }

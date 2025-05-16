@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fronius.Library.Services.Data
+namespace Fronius.Library.Services
 {
     using System;
     using System.Data.Entity;
