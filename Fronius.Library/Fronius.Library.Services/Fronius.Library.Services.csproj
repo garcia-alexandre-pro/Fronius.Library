@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Data\Author.cs">
       <DependentUpon>LibraryDataModel.tt</DependentUpon>
     </Compile>
@@ -63,6 +64,9 @@
       <DependentUpon>LibraryDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Genre.cs">
+      <DependentUpon>LibraryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\GetBooks_Result.cs">
       <DependentUpon>LibraryDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Illustrator.cs">

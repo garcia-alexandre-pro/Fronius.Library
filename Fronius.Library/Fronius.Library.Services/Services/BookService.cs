@@ -5,9 +5,9 @@ namespace Fronius.Library.Services
 {
     public sealed class BookService : Service<Book, LibraryEntities>
     {
-        public IEnumerable<GetBooks_Result> Get(int? authorId = null)
+        public IEnumerable<GetBooks_Result> Get(int? authorId = null, Constants.OrderingColumn? orderingColumn = null, Constants.OrderingDirection? orderingDirection = null)
         {
-            return Context.GetBooks(authorId, null, null);
+            return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString());
         }
 
         /// <summary>
