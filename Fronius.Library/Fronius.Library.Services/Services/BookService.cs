@@ -17,7 +17,7 @@ namespace Fronius.Library.Services
         /// <param name="orderingColumn">The column by which the result set is ordered.</param>
         /// <param name="orderingDirection">The ordering direction.</param>
         /// <returns>The books formated data.</returns>
-        public IEnumerable<BookListModel> Get(int? authorId = null, Constants.OrderingColumn? orderingColumn = null, Constants.OrderingDirection? orderingDirection = null)
+        public IEnumerable<BookListModel> Get(int? authorId, Constants.OrderingColumn? orderingColumn, Constants.OrderingDirection? orderingDirection)
         {
             if (orderingColumn == null)
             {
