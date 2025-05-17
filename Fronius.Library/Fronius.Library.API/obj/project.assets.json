@@ -1,12 +1,28 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "Fronius.Library.Services/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/Fronius.Library.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Fronius.Library.Services.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Fronius.Library.Services/1.0.0": {
+      "type": "project",
+      "path": "../Fronius.Library.Services/Fronius.Library.Services.csproj",
+      "msbuildProject": "../Fronius.Library.Services/Fronius.Library.Services.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Swashbuckle.AspNetCore >= 6.6.2"
+      "Fronius.Library.Services >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -63,12 +79,6 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
-        "dependencies": {
-          "Swashbuckle.AspNetCore": {
-            "target": "Package",
-            "version": "[6.6.2, )"
-          }
-        },
         "imports": [
           "net461",
           "net462",
@@ -91,13 +101,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "La source locale '\\\\074-VMINTEG\\nugetfeed' n’existe pas.",
-      "libraryId": "Swashbuckle.AspNetCore"
-    }
-  ]
+  }
 }

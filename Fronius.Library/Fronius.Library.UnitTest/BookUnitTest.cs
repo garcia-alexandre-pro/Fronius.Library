@@ -1,9 +1,17 @@
+using Fronius.Library.API;
+
 namespace Fronius.Library.UnitTest
 {
-    public class BookUnitTest
+    public sealed class BookUnitTest
     {
         [Fact]
-        public void TestAdd()
+        public void TestPost()
+        {
+
+        }
+
+        [Fact]
+        public void TestGet()
         {
 
         }

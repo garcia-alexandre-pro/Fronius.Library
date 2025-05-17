@@ -1,15 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cYb0+DXvzY4=",
-  "success": false,
+  "dgSpecHash": "ca6hKv/wYi4=",
+  "success": true,
   "projectFilePath": "C:\\Users\\agarcia\\Documents\\GitHub\\Fronius.Library\\Fronius.Library\\Fronius.Library.API\\Fronius.Library.API.csproj",
   "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "La source locale '\\\\074-VMINTEG\\nugetfeed' n’existe pas.",
-      "libraryId": "Swashbuckle.AspNetCore"
-    }
-  ]
+  "logs": []
 }
