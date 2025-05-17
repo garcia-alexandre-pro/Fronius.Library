@@ -1,11 +1,14 @@
 ﻿using Fronius.Library.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Fronius.Library.Services
 {
     public sealed class BookService : Service<Book, LibraryEntities>
     {
+        private const int ISBN_LENGTH = 13;
+
         /// <summary>
         /// Gets all the books, or only a filtered result set.
         /// </summary>
@@ -15,7 +18,7 @@ namespace Fronius.Library.Services
         /// <returns>The books formated data.</returns>
         public IEnumerable<GetBooks_Result> Get(int? authorId = null, Constants.OrderingColumn? orderingColumn = null, Constants.OrderingDirection? orderingDirection = null)
         {
-            return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString());
+            return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString()); // TODO: test validation (invalid author identifier, invalid ordering parameters...)
         }
 
         /// <summary>
@@ -27,10 +30,30 @@ namespace Fronius.Library.Services
         {
             if (EntitySet.Any(x => x.Title == book.Title.Trim().ToLowerInvariant()
                 && x.Year == book.ReleaseYear
-                && x.Authors))
+                && x.Authors)) // TODO: compare authors
             {
                 return -1;
             }
+
+            if (book.Title == null || book.Title.Trim() == string.Empty)
+            {
+                return -2;
+            }
+
+            if (book.ReleaseYear < 1450)
+            {
+                return -3;
+            }
+
+            Regex regex = new Regex($"^\\d{{{ISBN_LENGTH}}}$");
+
+            if (book.ReleaseYear < 1970 && book.ISBN != null
+                || book.ReleaseYear >= 1970 && (book.ISBN == null || book.ISBN.Length != ISBN_LENGTH || !regex.IsMatch(book.ISBN)))
+            {
+                return -3;
+            }
+
+            // TODO: further validation?
 
             Book newBook = new Book()
             {

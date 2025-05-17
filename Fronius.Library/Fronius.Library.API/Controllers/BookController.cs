@@ -21,7 +21,7 @@ namespace Fronius.Library.API.Controllers
         [HttpGet]
         public IEnumerable<BookListModel> Get()
         {
-            return _bookService.Get(); // TODO
+            return _bookService.Get(); // TODO: get the right model and add parameters
         }
 
         // GET api/<BookController>/5
@@ -35,7 +35,7 @@ namespace Fronius.Library.API.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
-            _bookService.Add(new Models.BookCreateModel()); // TODO
+            _bookService.Add(new Models.BookCreateModel()); // TODO: populate model
         }
 
         // PUT api/<BookController>/5

@@ -85,8 +85,7 @@ go
 alter table Book add constraint CK_Book_Year check([Year] >= 1450)
 go
 
-alter table Book add constraint CK_Book_ISBN check(([Year] >= 1970 and ISBN is not null or [Year] < 1970 and ISBN is null) 
-	and ISBN not like '%[^0-9]%')
+alter table Book add constraint CK_Book_ISBN check([Year] >= 1970 and ISBN is not null or [Year] < 1970 and (ISBN is null or ISBN not like '%[^0-9]%'))
 go
 
 create or alter procedure GetBooks @authorId int, @orderingColumn varchar(20), @orderingDirection varchar(4)
@@ -94,21 +93,36 @@ as
 begin
 	set nocount on;
 
+	declare @authorExists bit = 0
+
+	select @authorExists = 1 from Author where Id = @authorId
+
+	if @authorExists = 0
+	begin
+		;throw 51000, 'Invalid author identifier', 1;
+	end
+
 	if @orderingColumn is not null and @orderingColumn not in ('Title', 'Year', 'Genre')
 		or @orderingDirection is not null and @orderingDirection not in ('asc', 'desc')
 	begin
-		;throw 51000, 'Invalid ordering parameters', 1;
+		;throw 51001, 'Invalid ordering parameters', 1;
 	end
 
 	declare @query varchar(max)
 
-	set @query = 'select Book.Id,
+	set @query = 'select Title,
+		[Year],
+		ISBN,
+		Author as AuthorNames,
+		Illustrator as IllustratorName,
+		Genre as GenreNames
+	from (select Book.Id,
 		Title,
 		[Year],
 		ISBN,
-		Authors.Names as AuthorNames,
-		IllustratorList.FullName as IllustratorName,
-		Genres.Names as GenreNames
+		Authors.Names as Author,
+		IllustratorList.FullName as Illustrator,
+		Genres.Names as Genre
 	from [dbo].Book
 	inner join (select AuthorByBook.BookId
 		from [dbo].AuthorByBook 
@@ -123,10 +137,9 @@ begin
 			string_agg(Genre.[Name], '', '') as Names
 		from [dbo].GenreByBook
 		inner join [dbo].Genre on Genre.Id = GenreByBook.GenreId
-		group by GenreByBook.BookId) as Genres on Genres.BookId = Book.Id'
+		group by GenreByBook.BookId
+		order by Genre.[Name]) as Genres on Genres.BookId = Book.Id) as Temp'
 	+ iif(@orderingColumn is not null and @orderingDirection is not null, 'order by ' + @orderingColumn + ' ' + @orderingDirection, '')
-
-	--TODO: order by genre
 
 	exec(@query)
 end
