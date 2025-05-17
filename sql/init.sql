@@ -92,7 +92,9 @@ go
 create or alter procedure GetBooks @authorId int, @orderingColumn varchar(20), @orderingDirection varchar(4)
 as
 begin
-	select Book.Id,
+	declare @query varchar(max)
+
+	set @query = 'select Book.Id,
 		Title,
 		[Year],
 		ISBN,
@@ -102,19 +104,21 @@ begin
 	from [dbo].Book
 	inner join (select AuthorByBook.BookId
 		from [dbo].AuthorByBook 
-		where @authorId is not null or AuthorByBook.AuthorId = @authorId) as authorMatch on authorMatch.BookId = BookId
+		where @authorId is not null or AuthorByBook.AuthorId = ' + cast(@authorId as varchar) + ') as authorMatch on authorMatch.BookId = BookId
 	inner join (select AuthorByBook.BookId,
-			string_agg(AuthorList.FullName, ', ') as Names
+			string_agg(AuthorList.FullName, '', '') as Names
 		from [dbo].AuthorByBook
 		inner join [dbo].AuthorList on AuthorList.FullName = AuthorByBook.AuthorId
 		group by AuthorByBook.BookId) as Authors on Authors.BookId = Book.Id
 	inner join [dbo].IllustratorList on IllustratorList.Id = Book.IllustratorId
 	inner join (select GenreByBook.BookId,
-			string_agg(Genre.[Name], ', ') as Names
+			string_agg(Genre.[Name], '', '') as Names
 		from [dbo].GenreByBook
 		inner join [dbo].Genre on Genre.Id = GenreByBook.GenreId
 		group by GenreByBook.BookId) as Genres on Genres.BookId = Book.Id
-	--order by 
+	order by ' + @orderingColumn + ' ' + @orderingDirection
+
+	exec(@query)
 end
 go
 
