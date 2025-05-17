@@ -19,6 +19,15 @@ namespace Fronius.Library.Services
         /// <returns>The books formated data.</returns>
         public IEnumerable<BookListModel> Get(int? authorId = null, Constants.OrderingColumn? orderingColumn = null, Constants.OrderingDirection? orderingDirection = null)
         {
+            if (orderingColumn == null)
+            {
+                orderingDirection = null;
+            }
+            else if (orderingDirection == null) // if orderingColumn has value and orderingDirection has not
+            {
+                orderingDirection = Constants.OrderingDirection.asc;
+            }
+
             return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString())
                 .Select(x => new BookListModel(x)); // TODO: test validation (invalid author identifier, invalid ordering parameters...)
         }
@@ -88,7 +97,7 @@ namespace Fronius.Library.Services
 
                 return newBook.Id;
             }
-            catch(Exception) // TODO: filter by excpetion type
+            catch (Exception) // TODO: filter by excpetion type
             {
                 return -4;
             }

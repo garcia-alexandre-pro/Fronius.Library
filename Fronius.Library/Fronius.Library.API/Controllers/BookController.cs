@@ -12,7 +12,7 @@ namespace Fronius.Library.API
     {
         // GET: api/<BookController>/7
         [HttpGet("{authorId}")]
-        public IEnumerable<BookListModel> Get(int? authorId = null) // TODO: add parameters
+        public IEnumerable<BookListModel> Get(int? authorId = null, string? orderingColumn = null, string? orderingDirection = null) // TODO: direction as a string or a boolean?
         {
             using (BookService bookService = new BookService())
             {
