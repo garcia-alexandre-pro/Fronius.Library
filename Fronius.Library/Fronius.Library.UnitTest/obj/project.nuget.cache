@@ -15,19 +15,13 @@
       "code": "NU1301",
       "level": "Error",
       "message": "La source locale '\\\\074-VMINTEG\\nugetfeed' n’existe pas.",
-      "libraryId": "xunit.runner.visualstudio"
-    },
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "La source locale '\\\\074-VMINTEG\\nugetfeed' n’existe pas.",
       "libraryId": "xunit"
     },
     {
       "code": "NU1301",
       "level": "Error",
       "message": "La source locale '\\\\074-VMINTEG\\nugetfeed' n’existe pas.",
-      "libraryId": "Microsoft.NET.Test.Sdk"
+      "libraryId": "xunit.runner.visualstudio"
     }
   ]
 }

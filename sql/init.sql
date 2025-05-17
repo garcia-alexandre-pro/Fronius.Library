@@ -47,7 +47,7 @@ go
 create table Book(
 	Id int not null,
 	Title nvarchar(250) not null,
-	[Year] smallint not null,
+	[Year] smallint not null, -- release year
 	IllustratorId int not null,
 	ISBN char(13) null,
 	constraint PK_Book primary key clustered (Id),
@@ -66,7 +66,7 @@ go
 	
 create table GenreByBook(
 	BookId int not null,
-	GenreId int not null,
+	GenreId smallint not null,
 	constraint PK_GenreByBook primary key clustered (BookId, GenreId),
 	constraint FK_GenreByBook_BookId foreign key (BookId) references Book(Id),
 	constraint FK_GenreByBook_GenreId foreign key (GenreId) references Genre(Id)

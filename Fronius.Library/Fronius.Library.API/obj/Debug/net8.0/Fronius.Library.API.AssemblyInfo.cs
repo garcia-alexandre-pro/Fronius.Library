@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Fronius.Library.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f0f395a68595e1c51cae16dc04752e3426f0534")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef6f1f7cba872b28cf1ca0b06ffb27d1a728233a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fronius.Library.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fronius.Library.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

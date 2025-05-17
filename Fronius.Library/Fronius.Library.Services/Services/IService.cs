@@ -12,12 +12,12 @@ namespace Fronius.Library.Services
         where T : class
     {
         /// <summary>
-        /// Virtual set of corresponding entities from the database
+        /// Virtual set of entities from the database.
         /// </summary>
         DbSet<T> EntitySet { get; }
         
         /// <summary>
-        /// Database context
+        /// Database context.
         /// </summary>
         U Context { get; }
     }

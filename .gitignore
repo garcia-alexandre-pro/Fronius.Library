@@ -1,3 +1,7 @@
 /Fronius.Library/.vs
 /Fronius.Library/Fronius.Library.Services/obj
 /Fronius.Library/Fronius.Library.Services/bin
+/Fronius.Library/Fronius.Library.API/obj
+/Fronius.Library/Fronius.Library.API/bin
+/Fronius.Library/Fronius.Library.UnitTest/obj
+/Fronius.Library/Fronius.Library.UnitTest/bin
