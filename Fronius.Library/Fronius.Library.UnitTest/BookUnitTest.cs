@@ -1,6 +1,4 @@
 using Fronius.Library.API;
-using Fronius.Library.API.Controllers;
-using Fronius.Library.Services;
 
 namespace Fronius.Library.UnitTest
 {
@@ -9,7 +7,7 @@ namespace Fronius.Library.UnitTest
         [Fact]
         public void TestPost()
         {
-            BookController bookController = new BookController(new BookService());
+            BookController bookController = new BookController();
 
             //Assert.Equal(-1, bookController.Post());
         }
@@ -17,7 +15,9 @@ namespace Fronius.Library.UnitTest
         [Fact]
         public void TestGet()
         {
+            BookController bookController = new BookController();
 
+            //Assert.Equal(, bookController.Get());
         }
     }
 }
