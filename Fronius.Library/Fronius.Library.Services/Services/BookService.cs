@@ -32,7 +32,8 @@ namespace Fronius.Library.Services
         {
             if (EntitySet.Any(x => x.Title == book.Title.Trim().ToLowerInvariant()
                 && x.Year == book.ReleaseYear
-                && x.Authors)) // TODO: compare authors
+                && !x.Authors.Select(z => z.Id).Except(book.Authors).Any()
+                && !book.Authors.Except(x.Authors.Select(z => z.Id)).Any()))
             {
                 return -1;
             }
