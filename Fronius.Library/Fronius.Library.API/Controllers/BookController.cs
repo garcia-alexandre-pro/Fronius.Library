@@ -12,7 +12,7 @@ namespace Fronius.Library.API.Controllers
     {
         private BookService _bookService;
 
-        public BookController(BookService bookService)
+        public BookController(BookService bookService) // TODO: using service or autofac like instanciation?
         {
             _bookService = bookService;
         }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Fronius.Library.UnitTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eb06917ca24fe5ab5a116a63feec10869cf92c9d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2111e51ce736801a83ec6338555ba6b4fe4e2650")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fronius.Library.UnitTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fronius.Library.UnitTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

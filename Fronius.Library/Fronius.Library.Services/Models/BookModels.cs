@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fronius.Library.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,17 @@ namespace Fronius.Library.Models
 
     public class BookListModel
     {
+        public BookListModel(GetBooks_Result book)
+        {
+            Title = book.Title;
+            ReleaseYear = book.Year;
+            ISBN = book.ISBN;
+            Authors = book.AuthorNames;
+            Illustrator = book.IllustratorName;
+            Genres = book.GenreNames;
+        }
+
+        //public int Id { get; set; }
         public string Title { get; set; }
         public short ReleaseYear { get; set; }
         public string ISBN { get; set; }

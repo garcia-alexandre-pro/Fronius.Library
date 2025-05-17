@@ -1,4 +1,5 @@
 ﻿using Fronius.Library.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -16,9 +17,10 @@ namespace Fronius.Library.Services
         /// <param name="orderingColumn">The column by which the result set is ordered.</param>
         /// <param name="orderingDirection">The ordering direction.</param>
         /// <returns>The books formated data.</returns>
-        public IEnumerable<GetBooks_Result> Get(int? authorId = null, Constants.OrderingColumn? orderingColumn = null, Constants.OrderingDirection? orderingDirection = null)
+        public IEnumerable<BookListModel> Get(int? authorId = null, Constants.OrderingColumn? orderingColumn = null, Constants.OrderingDirection? orderingDirection = null)
         {
-            return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString()); // TODO: test validation (invalid author identifier, invalid ordering parameters...)
+            return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString())
+                .Select(x => new BookListModel(x)); // TODO: test validation (invalid author identifier, invalid ordering parameters...)
         }
 
         /// <summary>
@@ -53,37 +55,42 @@ namespace Fronius.Library.Services
                 return -3;
             }
 
-            // TODO: further validation?
-
-            Book newBook = new Book()
+            try
             {
-                Title = book.Title.Trim(),
-                Year = book.ReleaseYear,
-                ISBN = book.ISBN,
-                IllustratorId = book.IllustratorId
-            };
-
-            if (book.Authors.Any())
-            {
-                using (AuthorService authorService = new AuthorService())
+                Book newBook = new Book()
                 {
-                    newBook.Authors = authorService.Get(book.Authors);
-                }
-            }
+                    Title = book.Title.Trim(),
+                    Year = book.ReleaseYear,
+                    ISBN = book.ISBN,
+                    IllustratorId = book.IllustratorId
+                };
 
-            if (book.Genres.Any())
-            {
-                using (GenreService genreService = new GenreService())
+                if (book.Authors.Any())
                 {
-                    newBook.Genres = genreService.Get(book.Genres);
+                    using (AuthorService authorService = new AuthorService())
+                    {
+                        newBook.Authors = authorService.Get(book.Authors);
+                    }
                 }
+
+                if (book.Genres.Any())
+                {
+                    using (GenreService genreService = new GenreService())
+                    {
+                        newBook.Genres = genreService.Get(book.Genres);
+                    }
+                }
+
+                EntitySet.Add(newBook);
+
+                Context.SaveChanges();
+
+                return newBook.Id;
             }
-
-            EntitySet.Add(newBook);
-
-            Context.SaveChanges();
-
-            return newBook.Id;
+            catch(Exception) // TODO: filter by excpetion type
+            {
+                return -4;
+            }
         }
     }
 }
