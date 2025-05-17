@@ -14,9 +14,21 @@ namespace Fronius.Library.API
         [HttpGet("{authorId}")]
         public IEnumerable<BookListModel> Get(int? authorId = null, string? orderingColumn = null, string? orderingDirection = null) // TODO: direction as a string or a boolean?
         {
+            object? column = null;
+            object? direction = null;
+
+            if (orderingColumn != null && Enum.TryParse(typeof(Constants.OrderingColumn), orderingColumn, out column)) {
+                throw new ArgumentException("Invalid ordering column.", nameof(orderingColumn));
+            }
+
+            if (orderingDirection != null && Enum.TryParse(typeof(Constants.OrderingDirection), orderingDirection, out direction))
+            {
+                throw new ArgumentException("Invalid ordering direction.", nameof(orderingDirection));
+            }
+
             using (BookService bookService = new BookService())
             {
-                return bookService.Get(authorId); // TODO: add parameters
+                return bookService.Get(authorId, (Constants.OrderingColumn?)column, (Constants.OrderingDirection?)direction); // TODO: add parameters
             }
         }
 
