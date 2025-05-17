@@ -1,4 +1,5 @@
-﻿using Fronius.Library.Services;
+﻿using Fronius.Library.Models;
+using Fronius.Library.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,11 +12,16 @@ namespace Fronius.Library.API.Controllers
     {
         private BookService _bookService;
 
+        public BookController(BookService bookService)
+        {
+            _bookService = bookService;
+        }
+
         // GET: api/<BookController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<BookListModel> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _bookService.Get(); // TODO
         }
 
         // GET api/<BookController>/5
@@ -29,6 +35,7 @@ namespace Fronius.Library.API.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            _bookService.Add(new Models.BookCreateModel()); // TODO
         }
 
         // PUT api/<BookController>/5

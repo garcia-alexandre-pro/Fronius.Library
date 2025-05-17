@@ -3,22 +3,23 @@ using System.Data.Entity;
 
 namespace Fronius.Library.Services
 {
-    public interface IService : IDisposable
-    {
-    }
-
-    public interface IService<T, U> : IService
+    /// <summary>
+    /// Service interface.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="U"></typeparam>
+    public interface IService<T, U> : IDisposable
         where U : DbContext, new()
         where T : class
     {
-        /// <summary>
-        /// Virtual set of entities from the database.
-        /// </summary>
-        DbSet<T> EntitySet { get; }
+        ///// <summary>
+        ///// Virtual set of entities from the database.
+        ///// </summary>
+        //DbSet<T> EntitySet { get; }
         
-        /// <summary>
-        /// Database context.
-        /// </summary>
-        U Context { get; }
+        ///// <summary>
+        ///// Database context.
+        ///// </summary>
+        //U Context { get; }
     }
 }

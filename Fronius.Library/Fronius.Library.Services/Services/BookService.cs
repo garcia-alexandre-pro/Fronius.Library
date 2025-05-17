@@ -34,7 +34,7 @@ namespace Fronius.Library.Services
 
             Book newBook = new Book()
             {
-                Title = book.Title,
+                Title = book.Title.Trim(),
                 Year = book.ReleaseYear,
                 ISBN = book.ISBN,
                 IllustratorId = book.IllustratorId

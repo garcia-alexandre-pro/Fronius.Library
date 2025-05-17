@@ -2,6 +2,11 @@
 
 namespace Fronius.Library.Services
 {
+    /// <summary>
+    /// Service base class.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="U"></typeparam>
     public abstract class Service<T, U> : IService<T, U>
         where U : DbContext, new()
         where T : class
@@ -9,9 +14,15 @@ namespace Fronius.Library.Services
         private readonly U _context;
         private DbSet<T> _entitySet;
 
-        public DbSet<T> EntitySet => _entitySet;
+        /// <summary>
+        /// Database context.
+        /// </summary>
+        protected U Context => _context;
 
-        public U Context => _context;
+        /// <summary>
+        /// Virtual set of entities from the database.
+        /// </summary>
+        internal DbSet<T> EntitySet => _entitySet;
 
         protected Service()
             : this(new U())

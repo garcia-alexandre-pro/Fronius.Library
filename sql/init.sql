@@ -92,6 +92,14 @@ go
 create or alter procedure GetBooks @authorId int, @orderingColumn varchar(20), @orderingDirection varchar(4)
 as
 begin
+	set nocount on;
+
+	if @orderingColumn is not null and @orderingColumn not in ('Title', 'Year', 'Genre')
+		or @orderingDirection is not null and @orderingDirection not in ('asc', 'desc')
+	begin
+		;throw 51000, 'Invalid ordering parameters', 1;
+	end
+
 	declare @query varchar(max)
 
 	set @query = 'select Book.Id,
@@ -115,8 +123,10 @@ begin
 			string_agg(Genre.[Name], '', '') as Names
 		from [dbo].GenreByBook
 		inner join [dbo].Genre on Genre.Id = GenreByBook.GenreId
-		group by GenreByBook.BookId) as Genres on Genres.BookId = Book.Id
-	order by ' + @orderingColumn + ' ' + @orderingDirection
+		group by GenreByBook.BookId) as Genres on Genres.BookId = Book.Id'
+	+ iif(@orderingColumn is not null and @orderingDirection is not null, 'order by ' + @orderingColumn + ' ' + @orderingDirection, '')
+
+	--TODO: order by genre
 
 	exec(@query)
 end

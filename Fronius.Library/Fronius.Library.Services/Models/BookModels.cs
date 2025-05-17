@@ -15,4 +15,14 @@ namespace Fronius.Library.Models
         public int[] Authors { get; set; }
         public short[] Genres { get; set; }
     }
+
+    public class BookListModel
+    {
+        public string Title { get; set; }
+        public short ReleaseYear { get; set; }
+        public string ISBN { get; set; }
+        public string Authors { get; set; }
+        public string Illustrator { get; set; }
+        public string Genres { get; set; }
+    }
 }
