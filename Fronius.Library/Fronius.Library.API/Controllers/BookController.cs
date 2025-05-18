@@ -38,12 +38,12 @@ namespace Fronius.Library.API
 
             using (BookService bookService = new BookService())
             {
-                return bookService.Get(authorId, column, direction); // TODO: API models
+                return bookService.Get(authorId, column, direction);
             }
         }
 
         // POST api/book
-        public int Post([FromBody] BookCreateModel book) // TODO: API models
+        public int Post([FromBody] BookCreateModel book)
         {
             if (!ModelState.IsValid) {
                 return -5;

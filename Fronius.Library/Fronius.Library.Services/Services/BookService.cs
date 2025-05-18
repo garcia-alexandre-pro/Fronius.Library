@@ -97,7 +97,7 @@ namespace Fronius.Library.Services
 
                 return newBook.Id;
             }
-            catch (Exception) // TODO: filter by excpetion type
+            catch (Exception e) // TODO: filter by excpetion type
             {
                 return -4;
             }
