@@ -40,7 +40,7 @@ namespace Fronius.Library.Services
         public int Add(BookCreateModel book)
         {
             if (EntitySet.Any(x => x.Title == book.Title.Trim().ToLowerInvariant()
-                && x.Year == book.ReleaseYear
+                && x.ReleaseYear == book.ReleaseYear
                 && !x.Authors.Select(z => z.Id).Except(book.Authors).Any()
                 && !book.Authors.Except(x.Authors.Select(z => z.Id)).Any()))
             {
@@ -70,7 +70,7 @@ namespace Fronius.Library.Services
                 Book newBook = new Book()
                 {
                     Title = book.Title.Trim(),
-                    Year = book.ReleaseYear,
+                    ReleaseYear = book.ReleaseYear,
                     ISBN = book.ISBN,
                     IllustratorId = book.IllustratorId
                 };

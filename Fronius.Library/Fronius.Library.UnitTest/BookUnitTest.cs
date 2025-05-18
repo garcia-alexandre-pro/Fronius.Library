@@ -1,4 +1,5 @@
-using Fronius.Library.API;
+﻿using Fronius.Library.API;
+using Xunit;
 
 namespace Fronius.Library.UnitTest
 {
@@ -9,15 +10,7 @@ namespace Fronius.Library.UnitTest
         {
             BookController bookController = new BookController();
 
-            //Assert.Equal(-1, bookController.Post());
-        }
-
-        [Fact]
-        public void TestGet()
-        {
-            BookController bookController = new BookController();
-
-            //Assert.Equal(, bookController.Get());
+            Assert.Equal(-1, bookController.Post(new BookCreateModel() { Title = "Les Robots", ReleaseYear = 1950, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 5, Genres = new short[] { 5 } })); // TODO: API models
         }
     }
 }

@@ -1,44 +1,57 @@
 ﻿using Fronius.Library.Models;
 using Fronius.Library.Services;
-using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Web.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Fronius.Library.API
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BookController : ControllerBase
+    public class BookController : ApiController
     {
-        // GET: api/<BookController>/7
-        [HttpGet("{authorId}")]
-        public IEnumerable<BookListModel> Get(int? authorId = null, string? orderingColumn = null, string? orderingDirection = null) // TODO: direction as a string or a boolean?
+        // GET: api/book/7
+        public IEnumerable<BookListModel> Get(int? authorId = null, string orderingColumn = null, string orderingDirection = null) // TODO: direction as a string or a boolean?
         {
-            object? column = null;
-            object? direction = null;
+            Constants.OrderingColumn? column = null;
+            Constants.OrderingDirection? direction = null;
 
-            if (orderingColumn != null && Enum.TryParse(typeof(Constants.OrderingColumn), orderingColumn, out column)) {
-                throw new ArgumentException("Invalid ordering column.", nameof(orderingColumn));
+            if (orderingColumn != null)
+            {
+                if (!Enum.TryParse(orderingColumn, out Constants.OrderingColumn columnTemp))
+                {
+                    throw new ArgumentException("Invalid ordering column.", nameof(orderingColumn));
+                }
+
+                column = columnTemp;
             }
 
-            if (orderingDirection != null && Enum.TryParse(typeof(Constants.OrderingDirection), orderingDirection, out direction))
+            if (orderingDirection != null)
             {
-                throw new ArgumentException("Invalid ordering direction.", nameof(orderingDirection));
+                if (!Enum.TryParse(orderingDirection, out Constants.OrderingDirection directionTemp))
+                {
+                    throw new ArgumentException("Invalid ordering direction.", nameof(orderingDirection));
+                }
+
+                direction = directionTemp;
             }
 
             using (BookService bookService = new BookService())
             {
-                return bookService.Get(authorId, (Constants.OrderingColumn?)column, (Constants.OrderingDirection?)direction); // TODO: add parameters
+                return bookService.Get(authorId, column, direction); // TODO: API models
             }
         }
 
-        // POST api/<BookController>
-        [HttpPost]
-        public void Post([FromBody] string value) // TODO: parameters
+        // POST api/book
+        public int Post([FromBody] BookCreateModel book) // TODO: API models
         {
+            if (!ModelState.IsValid) {
+                return -5;
+            }
+
             using (BookService bookService = new BookService())
             {
-                bookService.Add(new Models.BookCreateModel()); // TODO: populate model
+                return Math.Min(bookService.Add(book), 0); // hiding identifier
             }
         }
     }

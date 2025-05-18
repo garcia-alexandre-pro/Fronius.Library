@@ -1,6 +1,0 @@
-@Fronius.Library.API_HostAddress = http://localhost:5153
-
-GET {{Fronius.Library.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

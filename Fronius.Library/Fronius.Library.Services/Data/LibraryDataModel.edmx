@@ -23,9 +23,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="Year" Type="smallint" Nullable="false" />
+          <Property Name="ReleaseYear" Type="smallint" Nullable="false" />
           <Property Name="IllustratorId" Type="int" Nullable="false" />
           <Property Name="ISBN" Type="char" MaxLength="13" />
         </EntityType>
@@ -266,7 +266,7 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             <End Role="Book" EntitySet="Books" />
             <End Role="Genre" EntitySet="Genres" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="GetBooks_Result">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Title" Nullable="false" MaxLength="250" />
@@ -288,9 +288,9 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="Int16" Nullable="false" />
+          <Property Name="ReleaseYear" Type="Int16" Nullable="false" />
           <Property Name="IllustratorId" Type="Int32" Nullable="false" />
           <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Illustrator" Relationship="LibraryModel.FK_Book_Illustrator" FromRole="Book" ToRole="Illustrator" />
@@ -392,7 +392,7 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           <End Type="LibraryModel.Book" Role="Book" Multiplicity="*" />
           <End Type="LibraryModel.Genre" Role="Genre" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -423,7 +423,7 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
               <MappingFragment StoreEntitySet="Book">
                 <ScalarProperty Name="ISBN" ColumnName="ISBN" />
                 <ScalarProperty Name="IllustratorId" ColumnName="IllustratorId" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ReleaseYear" ColumnName="ReleaseYear" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -490,7 +490,7 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
               <ScalarProperty Name="Id" ColumnName="BookId" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

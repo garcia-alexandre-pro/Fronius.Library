@@ -21,6 +21,7 @@ namespace Fronius.Library.Models
     {
         public BookListModel(GetBooks_Result book)
         {
+            Id = book.Id;
             Title = book.Title;
             ReleaseYear = book.Year;
             ISBN = book.ISBN;
@@ -29,7 +30,7 @@ namespace Fronius.Library.Models
             Genres = book.GenreNames;
         }
 
-        //public int Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public short ReleaseYear { get; set; }
         public string ISBN { get; set; }

@@ -11,7 +11,7 @@ namespace Fronius.Library.Services
         public enum OrderingColumn
         {
             Title,
-            Year,
+            ReleaseYear,
             Genre
         }
 

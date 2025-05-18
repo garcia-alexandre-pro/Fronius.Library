@@ -23,7 +23,7 @@ namespace Fronius.Library.Services
     
         public int Id { get; set; }
         public string Title { get; set; }
-        public short Year { get; set; }
+        public short ReleaseYear { get; set; }
         public int IllustratorId { get; set; }
         public string ISBN { get; set; }
     
