@@ -1,6 +1,7 @@
 ﻿using Fronius.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -29,7 +30,7 @@ namespace Fronius.Library.Services
             }
 
             return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString())
-                .Select(x => new BookListModel(x)); // TODO: test validation (invalid author identifier, invalid ordering parameters...)
+                .Select(x => new BookListModel(x));
         }
 
         /// <summary>
@@ -39,22 +40,14 @@ namespace Fronius.Library.Services
         /// <returns>The newly inserted book identifier.</returns>
         public int Add(BookCreateModel book)
         {
-            if (EntitySet.Any(x => x.Title == book.Title.Trim().ToLowerInvariant()
-                && x.ReleaseYear == book.ReleaseYear
-                && !x.Authors.Select(z => z.Id).Except(book.Authors).Any()
-                && !book.Authors.Except(x.Authors.Select(z => z.Id)).Any()))
+            if (book.Title == null || book.Title.Trim() == string.Empty)
             {
                 return -1;
             }
-
-            if (book.Title == null || book.Title.Trim() == string.Empty)
+            
+            if (book.ReleaseYear < 1450 || book.ReleaseYear > DateTime.Today.Year)
             {
                 return -2;
-            }
-
-            if (book.ReleaseYear < 1450)
-            {
-                return -3;
             }
 
             Regex regex = new Regex($"^\\d{{{ISBN_LENGTH}}}$");
@@ -63,6 +56,16 @@ namespace Fronius.Library.Services
                 || book.ReleaseYear >= 1970 && (book.ISBN == null || book.ISBN.Length != ISBN_LENGTH || !regex.IsMatch(book.ISBN)))
             {
                 return -3;
+            }
+
+            string title = book.Title?.Trim().ToLowerInvariant();
+
+            if (EntitySet.Any(x => x.Title.Trim().ToLower() == title
+                && x.ReleaseYear == book.ReleaseYear
+                && !x.Authors.Select(z => z.Id).Except(book.Authors).Any()
+                && !book.Authors.Except(x.Authors.Select(z => z.Id)).Any())) // TODO: Except() not working?
+            {
+                return -4;
             }
 
             try
@@ -97,9 +100,9 @@ namespace Fronius.Library.Services
 
                 return newBook.Id;
             }
-            catch (Exception e) // TODO: filter by excpetion type
+            catch (DbUpdateException)
             {
-                return -4;
+                return -5;
             }
         }
     }

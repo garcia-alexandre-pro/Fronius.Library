@@ -82,10 +82,10 @@ create table AuthorByBook(
 )
 go
 
-alter table Book add constraint CK_Book_Year check([Year] >= 1450)
+alter table Book add constraint CK_Book_Year check(ReleaseYear >= 1450 and ReleaseYear <= year(getdate()))
 go
 
-alter table Book add constraint CK_Book_ISBN check([Year] >= 1970 and ISBN is not null or [Year] < 1970 and (ISBN is null or ISBN not like '%[^0-9]%'))
+alter table Book add constraint CK_Book_ISBN check(ReleaseYear >= 1970 and ISBN is not null or ReleaseYear < 1970 and (ISBN is null or ISBN not like '%[^0-9]%'))
 go
 
 create or alter procedure GetBooks @authorId int, @orderingColumn varchar(20), @orderingDirection varchar(4)
@@ -215,6 +215,6 @@ go
 --alter table AuthorByBook add constraint FK_AuthorByBook_BookId foreign key (BookId) references Book(Id)
 --alter table GenreByBook add constraint FK_GenreByBook_BookId foreign key (BookId) references Book(Id)
 --go
---alter table Book add constraint CK_Book_ReleaseYear check(ReleaseYear >= 1450)
+--alter table Book add constraint CK_Book_ReleaseYear check(ReleaseYear >= 1450 and ReleaseYear <= year(getdate()))
 --alter table Book add constraint CK_Book_ISBN check(ReleaseYear >= 1970 and ISBN is not null or ReleaseYear < 1970 and (ISBN is null or ISBN not like '%[^0-9]%'))
 --go

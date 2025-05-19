@@ -4,13 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Fronius.Library.API
 {
-    public class BookController : ApiController
+    public class BookController : ApiController // TODO: API not accessible
     {
-        // GET: api/book/7
+        // GET
         public IEnumerable<BookListModel> Get(int? authorId = null, string orderingColumn = null, string orderingDirection = null) // TODO: direction as a string or a boolean?
         {
             Constants.OrderingColumn? column = null;
@@ -42,11 +40,11 @@ namespace Fronius.Library.API
             }
         }
 
-        // POST api/book
+        // POST
         public int Post([FromBody] BookCreateModel book)
         {
             if (!ModelState.IsValid) {
-                return -5;
+                return -100;
             }
 
             using (BookService bookService = new BookService())

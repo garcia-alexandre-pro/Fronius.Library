@@ -8,6 +8,9 @@ namespace Fronius.Library.API
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+
+            // Web API configuration and services
+            filters.Add(new RequireHttpsAttribute());
         }
     }
 }
