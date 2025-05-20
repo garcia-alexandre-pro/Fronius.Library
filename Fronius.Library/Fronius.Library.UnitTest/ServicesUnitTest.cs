@@ -45,7 +45,7 @@ namespace Fronius.Library.UnitTest
         {
             using (BookService bookService = new BookService())
             {
-                Assert.Equal(-4, bookService.Add(new BookCreateModel() { Title = "Les Robots", ReleaseYear = 1950, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 5, Genres = new short[] { 5 } })); // Already exists
+                Assert.Equal(-4, bookService.Add(new BookCreateModel() { Title = "Les Robots", ReleaseYear = 1950, ISBN = null, Authors = new int[] { 3 }, IllustratorId = 5, Genres = new short[] { 5 } })); // Already exists
             }
         }
 

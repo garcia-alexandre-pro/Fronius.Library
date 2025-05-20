@@ -58,12 +58,10 @@ namespace Fronius.Library.Services
                 return -3;
             }
 
-            string title = book.Title?.Trim().ToLowerInvariant();
-
-            if (EntitySet.Any(x => x.Title.Trim().ToLower() == title
+            if (EntitySet.Any(x => x.Title.Trim().ToLower() == book.Title.Trim().ToLower()
                 && x.ReleaseYear == book.ReleaseYear
                 && !x.Authors.Select(z => z.Id).Except(book.Authors).Any()
-                && !book.Authors.Except(x.Authors.Select(z => z.Id)).Any())) // TODO: Except() not working?
+                && !book.Authors.Except(x.Authors.Select(z => z.Id)).Any()))
             {
                 return -4;
             }

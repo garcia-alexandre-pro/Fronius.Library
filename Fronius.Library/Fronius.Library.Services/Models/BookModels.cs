@@ -9,12 +9,15 @@ namespace Fronius.Library.Models
 {
     public class BookCreateModel
     {
+        private int[] _authors;
+        private short[] _genres;
+
         public string Title { get; set; }
         public short ReleaseYear { get; set; }
         public string ISBN { get; set; }
         public int IllustratorId { get; set; }
-        public int[] Authors { get; set; }
-        public short[] Genres { get; set; }
+        public int[] Authors { get => _authors; set => _authors = value.Distinct().ToArray(); }
+        public short[] Genres { get => _genres; set => _genres = value.Distinct().ToArray(); }
     }
 
     public class BookListModel
