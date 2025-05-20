@@ -16,8 +16,8 @@ namespace Fronius.Library.Models
         public short ReleaseYear { get; set; }
         public string ISBN { get; set; }
         public int IllustratorId { get; set; }
-        public int[] Authors { get => _authors; set => _authors = value.Distinct().ToArray(); }
-        public short[] Genres { get => _genres; set => _genres = value.Distinct().ToArray(); }
+        public int[] Authors { get => _authors; set => _authors = value?.Distinct().ToArray(); }
+        public short[] Genres { get => _genres; set => _genres = value?.Distinct().ToArray(); }
     }
 
     public class BookListModel

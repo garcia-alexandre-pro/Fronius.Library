@@ -1,14 +1,18 @@
 ﻿using Fronius.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Infrastructure.Interception;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 
 namespace Fronius.Library.Services
 {
     public sealed class BookService : Service<Book, LibraryEntities>
     {
+        private readonly object obj = new object();
         private const int ISBN_LENGTH = 13;
 
         /// <summary>
@@ -40,67 +44,85 @@ namespace Fronius.Library.Services
         /// <returns>The newly inserted book identifier.</returns>
         public int Add(BookCreateModel book)
         {
-            if (book.Title == null || book.Title.Trim() == string.Empty)
+            lock (obj)
             {
-                return -1;
-            }
-            
-            if (book.ReleaseYear < 1450 || book.ReleaseYear > DateTime.Today.Year)
-            {
-                return -2;
-            }
-
-            Regex regex = new Regex($"^\\d{{{ISBN_LENGTH}}}$");
-
-            if (book.ReleaseYear < 1970 && book.ISBN != null
-                || book.ReleaseYear >= 1970 && (book.ISBN == null || book.ISBN.Length != ISBN_LENGTH || !regex.IsMatch(book.ISBN)))
-            {
-                return -3;
-            }
-
-            if (EntitySet.Any(x => x.Title.Trim().ToLower() == book.Title.Trim().ToLower()
-                && x.ReleaseYear == book.ReleaseYear
-                && !x.AuthorByBooks.Select(z => z.Id).Except(book.Authors).Any()
-                && !book.Authors.Except(x.AuthorByBooks.Select(z => z.Id)).Any()))
-            {
-                return -4;
-            }
-
-            try
-            {
-                Book newBook = new Book()
+                if (book.Authors == null || !book.Authors.Any() || book.Genres == null || !book.Genres.Any())
                 {
-                    Title = book.Title.Trim(),
-                    ReleaseYear = book.ReleaseYear,
-                    ISBN = book.ISBN,
-                    IllustratorId = book.IllustratorId
-                };
-
-                if (book.Authors.Any())
-                {
-                    using (AuthorService authorService = new AuthorService())
-                    {
-                        newBook.AuthorByBooks = authorService.Get(book.Authors);
-                    }
+                    return -5; // equivalent to empty
                 }
 
-                if (book.Genres.Any())
+                if (book.Title == null || book.Title.Trim() == string.Empty)
                 {
-                    using (GenreService genreService = new GenreService())
-                    {
-                        newBook.GenreByBooks = genreService.Get(book.Genres);
-                    }
+                    return -1;
                 }
 
-                EntitySet.Add(newBook);
+                if (book.ReleaseYear < 1450 || book.ReleaseYear > DateTime.Today.Year)
+                {
+                    return -2;
+                }
 
-                Context.SaveChanges();
+                Regex regex = new Regex($"^\\d{{{ISBN_LENGTH}}}$");
 
-                return newBook.Id;
-            }
-            catch (DbUpdateException)
-            {
-                return -5;
+                if (book.ReleaseYear < 1970 && book.ISBN != null
+                    || book.ReleaseYear >= 1970 && (book.ISBN == null || book.ISBN.Length != ISBN_LENGTH || !regex.IsMatch(book.ISBN)))
+                {
+                    return -3;
+                }
+
+                if (EntitySet.Any(x => x.Title.Trim().ToLower() == book.Title.Trim().ToLower()
+                    && x.ReleaseYear == book.ReleaseYear
+                    && !x.AuthorByBooks.Select(z => z.Id).Except(book.Authors).Any()
+                    && !book.Authors.Except(x.AuthorByBooks.Select(z => z.Id)).Any()))
+                {
+                    return -4;
+                }
+
+                try
+                {
+                    bool isSuccess = true;
+
+                    using (DbContextTransaction transactionContext = Context.Database.BeginTransaction())
+                    {
+                        Book newBook = new Book()
+                        {
+                            Title = book.Title.Trim(),
+                            ReleaseYear = book.ReleaseYear,
+                            ISBN = book.ISBN,
+                            IllustratorId = book.IllustratorId
+                        };
+
+                        EntitySet.Add(newBook);
+
+                        Context.SaveChanges();
+
+                        using (AuthorByBookService authorService = new AuthorByBookService())
+                        {
+                            isSuccess &= authorService.Add(newBook.Id, book.Authors);
+                        }
+
+                        using (GenreByBookService genreService = new GenreByBookService())
+                        {
+                            isSuccess &= genreService.Add(newBook.Id, book.Genres);
+                        }
+
+                        if (isSuccess)
+                        {
+                            transactionContext.Commit();
+
+                            return newBook.Id;
+                        }
+                        else
+                        {
+                            transactionContext.Rollback();
+                        }
+
+                        return -5;
+                    }
+                }
+                catch (DbUpdateException)
+                {
+                    return -6;
+                }
             }
         }
     }

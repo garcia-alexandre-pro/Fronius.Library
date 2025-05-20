@@ -54,10 +54,15 @@ namespace Fronius.Library.UnitTest
         {
             using (BookService bookService = new BookService())
             {
-                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 1, Genres = new short[] { 1, 2 } })); // Illustrator does not exist
-                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 5 }, IllustratorId = 5, Genres = new short[] { 1, 2 } })); // Author does not exist
-                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 5, Genres = new short[] { 1, 10 } })); // Genre does not exist
-                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 2000, ISBN = "9782226019431", Authors = new int[] { 1, 2 }, IllustratorId = 5, Genres = new short[] { 1, 3 } })); // ISBN already exists
+                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = null, IllustratorId = 1, Genres = new short[] { 1, 2 } })); // No author
+                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[0], IllustratorId = 1, Genres = new short[] { 1, 2 } })); // No author
+                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 1, Genres = null })); // No genres
+                Assert.Equal(-5, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 1, Genres = new short[0] })); // No genres
+                
+                Assert.Equal(-6, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 1, Genres = new short[] { 1, 2 } })); // Illustrator does not exist
+                Assert.Equal(-6, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 5 }, IllustratorId = 5, Genres = new short[] { 1, 2 } })); // Author does not exist
+                Assert.Equal(-6, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 1900, ISBN = null, Authors = new int[] { 1 }, IllustratorId = 5, Genres = new short[] { 1, 10 } })); // Genre does not exist
+                Assert.Equal(-6, bookService.Add(new BookCreateModel() { Title = "Test", ReleaseYear = 2000, ISBN = "9782226019431", Authors = new int[] { 1, 2 }, IllustratorId = 5, Genres = new short[] { 1, 3 } })); // ISBN already exists
             }
         }
 
