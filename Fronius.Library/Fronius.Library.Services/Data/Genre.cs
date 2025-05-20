@@ -17,13 +17,13 @@ namespace Fronius.Library.Services
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Genre()
         {
-            this.Books = new HashSet<Book>();
+            this.GenreByBooks = new HashSet<GenreByBook>();
         }
     
         public short Id { get; set; }
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<GenreByBook> GenreByBooks { get; set; }
     }
 }

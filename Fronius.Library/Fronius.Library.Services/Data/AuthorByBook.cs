@@ -12,18 +12,13 @@ namespace Fronius.Library.Services
     using System;
     using System.Collections.Generic;
     
-    public partial class Author
+    public partial class AuthorByBook
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Author()
-        {
-            this.AuthorByBooks = new HashSet<AuthorByBook>();
-        }
-    
         public int Id { get; set; }
+        public int BookId { get; set; }
+        public int AuthorId { get; set; }
     
-        public virtual Individual Individual { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AuthorByBook> AuthorByBooks { get; set; }
+        public virtual Author Author { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

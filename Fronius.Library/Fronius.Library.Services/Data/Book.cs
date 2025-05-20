@@ -17,8 +17,8 @@ namespace Fronius.Library.Services
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Book()
         {
-            this.Authors = new HashSet<Author>();
-            this.Genres = new HashSet<Genre>();
+            this.AuthorByBooks = new HashSet<AuthorByBook>();
+            this.GenreByBooks = new HashSet<GenreByBook>();
         }
     
         public int Id { get; set; }
@@ -27,10 +27,10 @@ namespace Fronius.Library.Services
         public int IllustratorId { get; set; }
         public string ISBN { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AuthorByBook> AuthorByBooks { get; set; }
         public virtual Illustrator Illustrator { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Author> Authors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Genre> Genres { get; set; }
+        public virtual ICollection<GenreByBook> GenreByBooks { get; set; }
     }
 }

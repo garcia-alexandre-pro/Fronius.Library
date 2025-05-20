@@ -26,7 +26,7 @@ namespace Fronius.Library.Models
         {
             Id = book.Id;
             Title = book.Title;
-            ReleaseYear = book.Year;
+            ReleaseYear = book.ReleaseYear;
             ISBN = book.ISBN;
             Authors = book.AuthorNames;
             Illustrator = book.IllustratorName;

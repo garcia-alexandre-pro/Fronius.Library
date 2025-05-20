@@ -60,8 +60,8 @@ namespace Fronius.Library.Services
 
             if (EntitySet.Any(x => x.Title.Trim().ToLower() == book.Title.Trim().ToLower()
                 && x.ReleaseYear == book.ReleaseYear
-                && !x.Authors.Select(z => z.Id).Except(book.Authors).Any()
-                && !book.Authors.Except(x.Authors.Select(z => z.Id)).Any()))
+                && !x.AuthorByBooks.Select(z => z.Id).Except(book.Authors).Any()
+                && !book.Authors.Except(x.AuthorByBooks.Select(z => z.Id)).Any()))
             {
                 return -4;
             }
@@ -80,7 +80,7 @@ namespace Fronius.Library.Services
                 {
                     using (AuthorService authorService = new AuthorService())
                     {
-                        newBook.Authors = authorService.Get(book.Authors);
+                        newBook.AuthorByBooks = authorService.Get(book.Authors);
                     }
                 }
 
@@ -88,7 +88,7 @@ namespace Fronius.Library.Services
                 {
                     using (GenreService genreService = new GenreService())
                     {
-                        newBook.Genres = genreService.Get(book.Genres);
+                        newBook.GenreByBooks = genreService.Get(book.Genres);
                     }
                 }
 

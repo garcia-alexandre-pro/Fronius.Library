@@ -65,20 +65,24 @@ create table Genre(
 go
 	
 create table GenreByBook(
+	Id int identity(1, 1) not null,
 	BookId int not null,
 	GenreId smallint not null,
-	constraint PK_GenreByBook primary key clustered (BookId, GenreId),
+	constraint PK_GenreByBook primary key clustered (Id),
 	constraint FK_GenreByBook_BookId foreign key (BookId) references Book(Id),
-	constraint FK_GenreByBook_GenreId foreign key (GenreId) references Genre(Id)
+	constraint FK_GenreByBook_GenreId foreign key (GenreId) references Genre(Id),
+	constraint UQ_GenreByBook_BookId_GenreId unique (BookId, GenreId)
 )
 go
 	
 create table AuthorByBook(
+	Id int identity(1, 1) not null,
 	BookId int not null,
 	AuthorId int not null,
-	constraint PK_AuthorByBook primary key clustered (BookId, AuthorId),
+	constraint PK_AuthorByBook primary key clustered (Id),
 	constraint FK_AuthorByBook_BookId foreign key (BookId) references Book(Id),
-	constraint FK_AuthorByBook_AuthorId foreign key (AuthorId) references Author(Id)
+	constraint FK_AuthorByBook_AuthorId foreign key (AuthorId) references Author(Id),
+	constraint UQ_AuthorByBook_BookId_AuthorId unique (BookId,AuthorId)
 )
 go
 
@@ -140,13 +144,18 @@ begin
 		from [dbo].Book
 		inner join (select AuthorByBook.BookId
 			from [dbo].AuthorByBook 
-			where @authorId is not null or AuthorByBook.AuthorId = ' + cast(@authorId as varchar) + ') as authorMatch on authorMatch.BookId = BookId
+			where ' + cast(@authorId as varchar(5)) + ' is null or AuthorByBook.AuthorId = ' + cast(@authorId as varchar(5)) + ') as authorMatch on authorMatch.BookId = BookId
 		inner join Authors on Authors.BookId = Book.Id
 		inner join [dbo].IllustratorList on IllustratorList.Id = Book.IllustratorId
 		inner join OrderedGenres on OrderedGenres.BookId = Book.Id) as Temp'
 	+ iif(@orderingColumn is not null and @orderingDirection is not null, 'order by ' + @orderingColumn + ' ' + @orderingDirection, '')
 
+	declare @result table(Id int not null, Title nvarchar(250) not null, ReleaseYear smallint not null, ISBN char(13) null, AuthorNames nvarchar(max), IllustratorName nvarchar(101) not null, GenreNames nvarchar(max))
+	
+	insert into @result
 	exec(@query)
+
+	select * from @result
 end
 go
 

@@ -28,8 +28,10 @@ namespace Fronius.Library.Services
         }
     
         public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<AuthorByBook> AuthorByBooks { get; set; }
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<GenreByBook> GenreByBooks { get; set; }
         public virtual DbSet<Illustrator> Illustrators { get; set; }
         public virtual DbSet<Individual> Individuals { get; set; }
         public virtual DbSet<AuthorList> AuthorLists { get; set; }
