@@ -93,7 +93,7 @@ as
 begin
 	set nocount on;
 
-	declare @authorExists bit = 0
+	declare @authorExists bit = iif(@authorId is null, 1, 0)
 
 	select @authorExists = 1 from Author where Id = @authorId
 
