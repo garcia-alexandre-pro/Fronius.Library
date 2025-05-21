@@ -111,6 +111,8 @@ namespace Fronius.Library.Services
                             });
                         }
 
+                        Context.SaveChanges();
+
                         transactionContext.Commit();
 
                         return newBook.Id;
