@@ -51,9 +51,17 @@ create table Book(
 	IllustratorId int not null,
 	ISBN char(13) null,
 	constraint PK_Book primary key clustered (Id),
-	constraint FK_Book_Illustrator foreign key (IllustratorId) references Illustrator(Id),
-	constraint UQ_Book_ISBN unique (ISBN)
+	constraint FK_Book_Illustrator foreign key (IllustratorId) references Illustrator(Id)
 )
+go
+
+create unique nonclustered index UI_Book_ISBN on Book(ISBN) where ISBN is not null
+go
+
+alter table Book add constraint CK_Book_Year check(ReleaseYear >= 1450 and ReleaseYear <= year(getdate()))
+go
+
+alter table Book add constraint CK_Book_ISBN check(ReleaseYear >= 1970 and ISBN is not null or ReleaseYear < 1970 and (ISBN is null or ISBN not like '%[^0-9]%'))
 go
 
 create table Genre(
@@ -84,12 +92,6 @@ create table AuthorByBook(
 	constraint FK_AuthorByBook_AuthorId foreign key (AuthorId) references Author(Id),
 	constraint UQ_AuthorByBook_BookId_AuthorId unique (BookId,AuthorId)
 )
-go
-
-alter table Book add constraint CK_Book_Year check(ReleaseYear >= 1450 and ReleaseYear <= year(getdate()))
-go
-
-alter table Book add constraint CK_Book_ISBN check(ReleaseYear >= 1970 and ISBN is not null or ReleaseYear < 1970 and (ISBN is null or ISBN not like '%[^0-9]%'))
 go
 
 create or alter procedure GetBooks @authorId int, @orderingColumn varchar(20), @orderingDirection varchar(4)
@@ -143,11 +145,11 @@ begin
 			OrderedGenres.Names as Genre
 		from [dbo].Book
 		inner join (select AuthorByBook.BookId
-			from [dbo].AuthorByBook 
-			where ' + cast(@authorId as varchar(9)) + ' is null or AuthorByBook.AuthorId = ' + cast(@authorId as varchar(9)) + ') as authorMatch on authorMatch.BookId = BookId
+			from [dbo].AuthorByBook '
+			+ iif(@authorId is not null, 'where AuthorByBook.AuthorId = ' + cast(@authorId as varchar(9)), '') + ') as authorMatch on authorMatch.BookId = BookId
 		inner join Authors on Authors.BookId = Book.Id
 		inner join [dbo].IllustratorList on IllustratorList.Id = Book.IllustratorId
-		inner join OrderedGenres on OrderedGenres.BookId = Book.Id) as Temp'
+		inner join OrderedGenres on OrderedGenres.BookId = Book.Id) as Temp '
 	+ iif(@orderingColumn is not null and @orderingDirection is not null, 'order by ' + @orderingColumn + ' ' + @orderingDirection, '')
 
 	declare @result table(Id int not null, Title nvarchar(250) not null, ReleaseYear smallint not null, ISBN char(13) null, AuthorNames nvarchar(max), IllustratorName nvarchar(101) not null, GenreNames nvarchar(max))
@@ -194,36 +196,3 @@ insert into GenreByBook(BookId, GenreId)
 values(1, 5),
 	(2, 4)
 go
-
-
-
---alter table GenreByBook drop FK_GenreByBook_BookId
---alter table AuthorByBook drop FK_AuthorByBook_BookId
---go
---alter table Book drop PK_Book
---alter table Book drop FK_Book_Illustrator
---alter table Book drop UQ_Book_ISBN
---alter table Book drop CK_Book_ReleaseYear
---alter table Book drop CK_Book_ISBN
---go
---alter table Book drop column Id
---alter table Book add Id int identity(1, 1) not null
---alter table Book drop column Title
---alter table Book add Title nvarchar(250) not null
---alter table Book drop column ReleaseYear
---alter table Book add ReleaseYear smallint not null
---alter table Book drop column IllustratorId
---alter table Book add IllustratorId int not null
---alter table Book drop column ISBN
---alter table Book add ISBN char(13) null
---go
---alter table Book add constraint PK_Book primary key clustered (Id)
---alter table Book add constraint FK_Book_Illustrator foreign key (IllustratorId) references Illustrator(Id)
---alter table Book add constraint UQ_Book_ISBN unique (ISBN)
---go
---alter table AuthorByBook add constraint FK_AuthorByBook_BookId foreign key (BookId) references Book(Id)
---alter table GenreByBook add constraint FK_GenreByBook_BookId foreign key (BookId) references Book(Id)
---go
---alter table Book add constraint CK_Book_ReleaseYear check(ReleaseYear >= 1450 and ReleaseYear <= year(getdate()))
---alter table Book add constraint CK_Book_ISBN check(ReleaseYear >= 1970 and ISBN is not null or ReleaseYear < 1970 and (ISBN is null or ISBN not like '%[^0-9]%'))
---go

@@ -7,7 +7,6 @@
       <Diagram DiagramId="12c83d2ef90a42598c64fafd87eb76b3" Name="Diagram1">
         <EntityTypeShape EntityType="LibraryModel.Author" Width="1.5" PointX="3" PointY="1.25" />
         <EntityTypeShape EntityType="LibraryModel.AuthorByBook" Width="1.5" PointX="7.5" PointY="2.75" />
-        <EntityTypeShape EntityType="LibraryModel.Book" Width="1.5" PointX="5.25" PointY="3.625" />
         <EntityTypeShape EntityType="LibraryModel.Genre" Width="1.5" PointX="5.25" PointY="7.125" />
         <EntityTypeShape EntityType="LibraryModel.GenreByBook" Width="1.5" PointX="7.5" PointY="5.875" />
         <EntityTypeShape EntityType="LibraryModel.Illustrator" Width="1.5" PointX="3" PointY="4.125" />
@@ -16,11 +15,12 @@
         <EntityTypeShape EntityType="LibraryModel.IllustratorList" Width="1.5" PointX="7.75" PointY="8.75" />
         <AssociationConnector Association="LibraryModel.FK_Author_Individual" />
         <AssociationConnector Association="LibraryModel.FK_AuthorByBook_AuthorId" />
+        <AssociationConnector Association="LibraryModel.FK_GenreByBook_GenreId" />
+        <AssociationConnector Association="LibraryModel.FK_Illustrator_Individual" />
+        <EntityTypeShape EntityType="LibraryModel.Book" Width="1.5" PointX="5.25" PointY="3.625" />
         <AssociationConnector Association="LibraryModel.FK_AuthorByBook_BookId" />
         <AssociationConnector Association="LibraryModel.FK_Book_Illustrator" />
         <AssociationConnector Association="LibraryModel.FK_GenreByBook_BookId" />
-        <AssociationConnector Association="LibraryModel.FK_GenreByBook_GenreId" />
-        <AssociationConnector Association="LibraryModel.FK_Illustrator_Individual" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

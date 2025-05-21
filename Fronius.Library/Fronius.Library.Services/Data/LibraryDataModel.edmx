@@ -241,7 +241,6 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           </FunctionImport>
           <EntitySet Name="Authors" EntityType="LibraryModel.Author" />
           <EntitySet Name="AuthorByBooks" EntityType="LibraryModel.AuthorByBook" />
-          <EntitySet Name="Books" EntityType="LibraryModel.Book" />
           <EntitySet Name="Genres" EntityType="LibraryModel.Genre" />
           <EntitySet Name="GenreByBooks" EntityType="LibraryModel.GenreByBook" />
           <EntitySet Name="Illustrators" EntityType="LibraryModel.Illustrator" />
@@ -256,6 +255,15 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             <End Role="Author" EntitySet="Authors" />
             <End Role="AuthorByBook" EntitySet="AuthorByBooks" />
           </AssociationSet>
+          <AssociationSet Name="FK_GenreByBook_GenreId" Association="LibraryModel.FK_GenreByBook_GenreId">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="GenreByBook" EntitySet="GenreByBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Illustrator_Individual" Association="LibraryModel.FK_Illustrator_Individual">
+            <End Role="Individual" EntitySet="Individuals" />
+            <End Role="Illustrator" EntitySet="Illustrators" />
+          </AssociationSet>
+          <EntitySet Name="Books" EntityType="LibraryModel.Book" />
           <AssociationSet Name="FK_AuthorByBook_BookId" Association="LibraryModel.FK_AuthorByBook_BookId">
             <End Role="Book" EntitySet="Books" />
             <End Role="AuthorByBook" EntitySet="AuthorByBooks" />
@@ -267,14 +275,6 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           <AssociationSet Name="FK_GenreByBook_BookId" Association="LibraryModel.FK_GenreByBook_BookId">
             <End Role="Book" EntitySet="Books" />
             <End Role="GenreByBook" EntitySet="GenreByBooks" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GenreByBook_GenreId" Association="LibraryModel.FK_GenreByBook_GenreId">
-            <End Role="Genre" EntitySet="Genres" />
-            <End Role="GenreByBook" EntitySet="GenreByBooks" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Illustrator_Individual" Association="LibraryModel.FK_Illustrator_Individual">
-            <End Role="Individual" EntitySet="Individuals" />
-            <End Role="Illustrator" EntitySet="Illustrators" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="GetBooks_Result">
@@ -304,19 +304,6 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           <NavigationProperty Name="Author" Relationship="LibraryModel.FK_AuthorByBook_AuthorId" FromRole="AuthorByBook" ToRole="Author" />
           <NavigationProperty Name="Book" Relationship="LibraryModel.FK_AuthorByBook_BookId" FromRole="AuthorByBook" ToRole="Book" />
         </EntityType>
-        <EntityType Name="Book">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ReleaseYear" Type="Int16" Nullable="false" />
-          <Property Name="IllustratorId" Type="Int32" Nullable="false" />
-          <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="AuthorByBooks" Relationship="LibraryModel.FK_AuthorByBook_BookId" FromRole="Book" ToRole="AuthorByBook" />
-          <NavigationProperty Name="Illustrator" Relationship="LibraryModel.FK_Book_Illustrator" FromRole="Book" ToRole="Illustrator" />
-          <NavigationProperty Name="GenreByBooks" Relationship="LibraryModel.FK_GenreByBook_BookId" FromRole="Book" ToRole="GenreByBook" />
-        </EntityType>
         <EntityType Name="Genre">
           <Key>
             <PropertyRef Name="Id" />
@@ -332,16 +319,16 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BookId" Type="Int32" Nullable="false" />
           <Property Name="GenreId" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="Book" Relationship="LibraryModel.FK_GenreByBook_BookId" FromRole="GenreByBook" ToRole="Book" />
           <NavigationProperty Name="Genre" Relationship="LibraryModel.FK_GenreByBook_GenreId" FromRole="GenreByBook" ToRole="Genre" />
+          <NavigationProperty Name="Book" Relationship="LibraryModel.FK_GenreByBook_BookId" FromRole="GenreByBook" ToRole="Book" />
         </EntityType>
         <EntityType Name="Illustrator">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Books" Relationship="LibraryModel.FK_Book_Illustrator" FromRole="Illustrator" ToRole="Book" />
           <NavigationProperty Name="Individual" Relationship="LibraryModel.FK_Illustrator_Individual" FromRole="Illustrator" ToRole="Individual" />
+          <NavigationProperty Name="Books" Relationship="LibraryModel.FK_Book_Illustrator" FromRole="Illustrator" ToRole="Book" />
         </EntityType>
         <EntityType Name="Individual">
           <Key>
@@ -402,6 +389,43 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_GenreByBook_GenreId">
+          <End Type="LibraryModel.Genre" Role="Genre" Multiplicity="1" />
+          <End Type="LibraryModel.GenreByBook" Role="GenreByBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GenreByBook">
+              <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Illustrator_Individual">
+          <End Type="LibraryModel.Individual" Role="Individual" Multiplicity="1" />
+          <End Type="LibraryModel.Illustrator" Role="Illustrator" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Individual">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Illustrator">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseYear" Type="Int16" Nullable="false" />
+          <Property Name="IllustratorId" Type="Int32" Nullable="false" />
+          <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="AuthorByBooks" Relationship="LibraryModel.FK_AuthorByBook_BookId" FromRole="Book" ToRole="AuthorByBook" />
+          <NavigationProperty Name="Illustrator" Relationship="LibraryModel.FK_Book_Illustrator" FromRole="Book" ToRole="Illustrator" />
+          <NavigationProperty Name="GenreByBooks" Relationship="LibraryModel.FK_GenreByBook_BookId" FromRole="Book" ToRole="GenreByBook" />
+        </EntityType>
         <Association Name="FK_AuthorByBook_BookId">
           <End Type="LibraryModel.Book" Role="Book" Multiplicity="1" />
           <End Type="LibraryModel.AuthorByBook" Role="AuthorByBook" Multiplicity="*" />
@@ -438,30 +462,6 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_GenreByBook_GenreId">
-          <End Type="LibraryModel.Genre" Role="Genre" Multiplicity="1" />
-          <End Type="LibraryModel.GenreByBook" Role="GenreByBook" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Genre">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="GenreByBook">
-              <PropertyRef Name="GenreId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Illustrator_Individual">
-          <End Type="LibraryModel.Individual" Role="Individual" Multiplicity="1" />
-          <End Type="LibraryModel.Illustrator" Role="Illustrator" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Individual">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Illustrator">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -493,17 +493,6 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
               <MappingFragment StoreEntitySet="AuthorByBook">
                 <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
                 <ScalarProperty Name="BookId" ColumnName="BookId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Books">
-            <EntityTypeMapping TypeName="LibraryModel.Book">
-              <MappingFragment StoreEntitySet="Book">
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
-                <ScalarProperty Name="IllustratorId" ColumnName="IllustratorId" />
-                <ScalarProperty Name="ReleaseYear" ColumnName="ReleaseYear" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -558,6 +547,17 @@ avertissement 6002: La table/vue 'Library.dbo.IllustratorList' n'a pas de clé p
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="LibraryModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="IllustratorId" ColumnName="IllustratorId" />
+                <ScalarProperty Name="ReleaseYear" ColumnName="ReleaseYear" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

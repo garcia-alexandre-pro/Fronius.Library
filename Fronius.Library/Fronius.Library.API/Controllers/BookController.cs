@@ -6,7 +6,7 @@ using System.Web.Http;
 
 namespace Fronius.Library.API
 {
-    public class BookController : ApiController // TODO: API not accessible
+    public class BookController : ApiController
     {
         // GET
         public IEnumerable<BookListModel> Get(int? authorId = null, string orderingColumn = null, string orderingDirection = null) // TODO: direction as a string or a boolean?

@@ -12,7 +12,7 @@ namespace Fronius.Library.Services
 {
     public sealed class BookService : Service<Book, LibraryEntities>
     {
-        private readonly object obj = new object();
+        private readonly object _obj = new object();
         private const int ISBN_LENGTH = 13;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Fronius.Library.Services
             }
 
             return Context.GetBooks(authorId, orderingColumn?.ToString(), orderingDirection?.ToString())
-                .Select(x => new BookListModel(x));
+                .Select(x => new BookListModel(x)).ToList();
         }
 
         /// <summary>
@@ -44,29 +44,29 @@ namespace Fronius.Library.Services
         /// <returns>The newly inserted book identifier.</returns>
         public int Add(BookCreateModel book)
         {
-            lock (obj)
+            lock (_obj)
             {
                 if (book.Authors == null || !book.Authors.Any() || book.Genres == null || !book.Genres.Any())
-                {
-                    return -5; // equivalent to empty
-                }
-
-                if (book.Title == null || book.Title.Trim() == string.Empty)
                 {
                     return -1;
                 }
 
-                if (book.ReleaseYear < 1450 || book.ReleaseYear > DateTime.Today.Year)
+                if (book.Title == null || book.Title.Trim() == string.Empty)
                 {
                     return -2;
+                }
+
+                if (book.ReleaseYear < 1450 || book.ReleaseYear > DateTime.Today.Year)
+                {
+                    return -3;
                 }
 
                 Regex regex = new Regex($"^\\d{{{ISBN_LENGTH}}}$");
 
                 if (book.ReleaseYear < 1970 && book.ISBN != null
-                    || book.ReleaseYear >= 1970 && (book.ISBN == null || book.ISBN.Length != ISBN_LENGTH || !regex.IsMatch(book.ISBN)))
+                    || book.ReleaseYear >= 1970 && (book.ISBN == null || book.ISBN.Length != ISBN_LENGTH || !regex.IsMatch(book.ISBN) || EntitySet.Any(x => x.ISBN == book.ISBN)))
                 {
-                    return -3;
+                    return -4;
                 }
 
                 if (EntitySet.Any(x => x.Title.Trim().ToLower() == book.Title.Trim().ToLower()
@@ -74,13 +74,11 @@ namespace Fronius.Library.Services
                     && !x.AuthorByBooks.Select(z => z.AuthorId).Except(book.Authors).Any()
                     && !book.Authors.Except(x.AuthorByBooks.Select(z => z.AuthorId)).Any()))
                 {
-                    return -4;
+                    return -5;
                 }
 
                 try
                 {
-                    bool isSuccess = true;
-
                     using (DbContextTransaction transactionContext = Context.Database.BeginTransaction())
                     {
                         Book newBook = new Book()
@@ -95,31 +93,30 @@ namespace Fronius.Library.Services
 
                         Context.SaveChanges();
 
-                        using (AuthorByBookService authorService = new AuthorByBookService())
+                        foreach (int authorId in book.Authors)
                         {
-                            isSuccess &= authorService.Add(newBook.Id, book.Authors);
+                            Context.AuthorByBooks.Add(new AuthorByBook()
+                            {
+                                BookId = newBook.Id,
+                                AuthorId = authorId
+                            });
                         }
 
-                        using (GenreByBookService genreService = new GenreByBookService())
+                        foreach (short genreId in book.Genres)
                         {
-                            isSuccess &= genreService.Add(newBook.Id, book.Genres);
+                            Context.GenreByBooks.Add(new GenreByBook()
+                            {
+                                BookId = newBook.Id,
+                                GenreId = genreId
+                            });
                         }
 
-                        if (isSuccess)
-                        {
-                            transactionContext.Commit();
+                        transactionContext.Commit();
 
-                            return newBook.Id;
-                        }
-                        else
-                        {
-                            transactionContext.Rollback();
-                        }
-
-                        return -5;
+                        return newBook.Id;
                     }
                 }
-                catch (DbUpdateException)
+                catch (DbUpdateException e)
                 {
                     return -6;
                 }

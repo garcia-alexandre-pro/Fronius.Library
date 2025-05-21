@@ -22,8 +22,8 @@ namespace Fronius.Library.Services
     
         public int Id { get; set; }
     
+        public virtual Individual Individual { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Book> Books { get; set; }
-        public virtual Individual Individual { get; set; }
     }
 }

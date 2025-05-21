@@ -18,7 +18,7 @@ namespace Fronius.Library.Services
         public int BookId { get; set; }
         public short GenreId { get; set; }
     
-        public virtual Book Book { get; set; }
         public virtual Genre Genre { get; set; }
+        public virtual Book Book { get; set; }
     }
 }
