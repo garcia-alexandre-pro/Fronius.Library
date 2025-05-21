@@ -146,7 +146,7 @@ begin
 		from [dbo].Book
 		inner join (select AuthorByBook.BookId
 			from [dbo].AuthorByBook '
-			+ iif(@authorId is not null, 'where AuthorByBook.AuthorId = ' + cast(@authorId as varchar(9)), '') + ') as authorMatch on authorMatch.BookId = BookId
+			+ iif(@authorId is not null, 'where AuthorByBook.AuthorId = ' + cast(@authorId as varchar(9)), '') + ') as authorMatch on authorMatch.BookId = Book.Id
 		inner join Authors on Authors.BookId = Book.Id
 		inner join [dbo].IllustratorList on IllustratorList.Id = Book.IllustratorId
 		inner join OrderedGenres on OrderedGenres.BookId = Book.Id) as Temp '
