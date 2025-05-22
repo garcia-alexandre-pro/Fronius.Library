@@ -1,6 +1,7 @@
 ﻿using Fronius.Library.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,11 +13,16 @@ namespace Fronius.Library.Models
         private int[] _authors;
         private short[] _genres;
 
+        [Required]
         public string Title { get; set; }
+        [Required]
         public short ReleaseYear { get; set; }
         public string ISBN { get; set; }
+        [Required]
         public int IllustratorId { get; set; }
+        [Required]
         public int[] Authors { get => _authors; set => _authors = value?.Distinct().ToArray(); }
+        [Required]
         public short[] Genres { get => _genres; set => _genres = value?.Distinct().ToArray(); }
     }
 
