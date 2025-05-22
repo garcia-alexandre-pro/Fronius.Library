@@ -22,7 +22,7 @@ namespace Fronius.Library.Models
         [Required(ErrorMessage = "Release year required.")]
         [Range(1450, 9999, ErrorMessage = "Release year should be between 1450 and current year.")]
         public short ReleaseYear { get; set; }
-        [StringLength(13, MinimumLength = 13, ErrorMessage = "ISBN should be 13 characters.")]
+        [StringLength(13, MinimumLength = 13, ErrorMessage = "ISBN should be null or 13 characters.")]
         public string ISBN { get; set; }
         [Required(ErrorMessage = "Illustrator required.")]
         public int IllustratorId { get; set; }

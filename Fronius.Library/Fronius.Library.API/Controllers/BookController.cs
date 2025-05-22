@@ -44,7 +44,7 @@ namespace Fronius.Library.API
         public int Post([FromBody] BookCreateModel book)
         {
             if (!ModelState.IsValid) {
-                return -100;
+                return -101;
             }
 
             using (BookService bookService = new BookService())
