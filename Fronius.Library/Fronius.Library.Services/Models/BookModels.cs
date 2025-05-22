@@ -16,17 +16,18 @@ namespace Fronius.Library.Models
         private int[] _authors;
         private short[] _genres;
 
-        [Required]
+        //[Required]
+        //[StringLength(250, MinimumLength = 1)]
         public string Title { get; set; }
-        [Required]
-        [Range(1450, 9999)]
+        //[Required]
+        //[Range(1450, 9999)]
         public short ReleaseYear { get; set; }
         public string ISBN { get; set; }
-        [Required]
+        //[Required]
         public int IllustratorId { get; set; }
-        [Required]
+        //[Required]
         public int[] Authors { get => _authors; set => _authors = value?.Distinct().ToArray(); }
-        [Required]
+        //[Required]
         public short[] Genres { get => _genres; set => _genres = value?.Distinct().ToArray(); }
     }
 
