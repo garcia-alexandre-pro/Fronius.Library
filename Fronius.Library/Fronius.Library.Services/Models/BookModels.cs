@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Fronius.Library.Models
 {
+    /// <summary>
+    /// Book creation model (POST).
+    /// </summary>
     public class BookCreateModel
     {
         private int[] _authors;
@@ -16,6 +19,7 @@ namespace Fronius.Library.Models
         [Required]
         public string Title { get; set; }
         [Required]
+        [Range(1450, 9999)]
         public short ReleaseYear { get; set; }
         public string ISBN { get; set; }
         [Required]
@@ -26,6 +30,9 @@ namespace Fronius.Library.Models
         public short[] Genres { get => _genres; set => _genres = value?.Distinct().ToArray(); }
     }
 
+    /// <summary>
+    /// Book listing model (GET).
+    /// </summary>
     public class BookListModel
     {
         public BookListModel(GetBooks_Result book)
