@@ -44,7 +44,7 @@ namespace Fronius.Library.Services
         /// <returns>The newly inserted book identifier.</returns>
         public int Add(BookCreateModel book)
         {
-            lock (_obj) // avoid concurrent accesses
+            lock (_obj) // avoid concurrent accesses from several threads
             {
                 if (book.Authors == null || !book.Authors.Any() || book.Genres == null || !book.Genres.Any())
                 {
