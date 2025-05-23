@@ -19,12 +19,13 @@ namespace Fronius.Library.Models
         [Required(ErrorMessage = "Title required.")]
         [StringLength(250, MinimumLength = 1, ErrorMessage = "Title should be between 1 and 250 characters.")]
         public string Title { get; set; }
-        [Required(ErrorMessage = "Release year required.")]
-        [Range(1450, 9999, ErrorMessage = "Release year should be between 1450 and current year.")]
+        [Required(ErrorMessage = "ReleaseYear required.")]
+        [Range(1450, 9999, ErrorMessage = "ReleaseYear should be between 1450 and current year.")]
         public short ReleaseYear { get; set; }
         [StringLength(13, MinimumLength = 13, ErrorMessage = "ISBN should be null or 13 characters.")]
         public string ISBN { get; set; }
-        [Required(ErrorMessage = "Illustrator required.")]
+        [Required(ErrorMessage = "IllustratorId required.")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "IllustratorId should greater then 0.")]
         public int IllustratorId { get; set; }
         [Required(ErrorMessage = "Authors required.")]
         public int[] Authors { get => _authors; set => _authors = value?.Distinct().ToArray(); }

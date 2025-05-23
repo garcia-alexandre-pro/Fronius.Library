@@ -2,6 +2,7 @@
 using Fronius.Library.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace Fronius.Library.API
@@ -41,10 +42,10 @@ namespace Fronius.Library.API
         }
 
         // POST
-        public int Post([FromBody] BookCreateModel book)
+        public object Post([FromBody] BookCreateModel book)
         {
             if (!ModelState.IsValid) {
-                return -101;
+                return ModelState.Select(x => new { PropertyName = x.Key, Errors = x.Value.Errors.Select(z => z.ErrorMessage) });
             }
 
             using (BookService bookService = new BookService())
